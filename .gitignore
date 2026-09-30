@@ -1,0 +1,14 @@
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+
+node_modules/
+dist/
+coverage/
+*.tgz
+*.log
+*.tsbuildinfo
+fixtures/consumer/out/

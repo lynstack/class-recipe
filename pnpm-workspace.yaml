@@ -1,0 +1,4 @@
+minimumReleaseAgeExclude:
+  - publint@0.3.25
+  - "@types/node@24.19.1"
+saveExact: true

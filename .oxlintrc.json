@@ -1,0 +1,119 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "eslint",
+    "typescript",
+    "unicorn",
+    "oxc",
+    "import",
+    "promise",
+    "vitest"
+  ],
+  "options": {
+    "typeAware": true,
+    "reportUnusedDisableDirectives": "error"
+  },
+  // Every stable category. The nursery holds rules still in development.
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "pedantic": "error",
+    "perf": "error",
+    "style": "error",
+    "restriction": "error"
+  },
+  "rules": {
+    "eslint/func-style": [
+      "error",
+      "declaration",
+      { "allowArrowFunctions": true }
+    ],
+    "eslint/no-duplicate-imports": [
+      "error",
+      { "allowSeparateTypeImports": true }
+    ],
+    "eslint/no-magic-numbers": [
+      "error",
+      {
+        "ignore": [0, 1],
+        "ignoreArrayIndexes": true,
+        "ignoreDefaultValues": true
+      }
+    ],
+    "eslint/no-use-before-define": ["error", { "functions": false }],
+    "eslint/one-var": ["error", "never"],
+    "typescript/no-confusing-void-expression": [
+      "error",
+      { "ignoreArrowShorthand": true }
+    ],
+    "typescript/prefer-readonly-parameter-types": [
+      "error",
+      {
+        "allow": [
+          { "from": "package", "package": "vitest", "name": ["TestContext"] },
+          // TypeScript has no readonly typed arrays, and ReadonlyMap is
+          // read-only although it has methods.
+          { "from": "lib", "name": ["Int32Array", "ReadonlyMap"] }
+        ]
+      }
+    ],
+    "vitest/prefer-expect-assertions": [
+      "error",
+      { "onlyFunctionsWithAsyncKeyword": true }
+    ],
+    "vitest/valid-title": ["error", { "allowArguments": true }],
+
+    // Each rule below contradicts another enabled rule, which wins.
+    // import/no-default-export: a library exports names.
+    "import/no-named-export": "off",
+    // unicorn/no-null: TypeScript models absent values as undefined.
+    "eslint/no-undefined": "off",
+    // unicorn/prefer-ternary: a conditional value stays an expression.
+    "eslint/no-ternary": "off",
+    // vitest/prefer-importing-vitest-globals: tests import what they use.
+    "vitest/no-importing-vitest-globals": "off",
+    // vitest/prefer-strict-boolean-matchers: booleans are compared exactly.
+    "vitest/prefer-to-be-truthy": "off",
+
+    // These forbid syntax that the ES2022 target supports.
+    "oxc/no-async-await": "off",
+    "oxc/no-optional-chaining": "off",
+    "oxc/no-rest-spread-properties": "off",
+
+    // The test timeout is set once for the whole suite.
+    "vitest/require-test-timeout": "off"
+  },
+  "overrides": [
+    {
+      // The tools load their configuration from a default export.
+      "files": ["*.config.ts"],
+      "rules": { "import/no-default-export": "off" }
+    },
+    {
+      "files": ["src/**/*.test.ts", "src/**/*.bench.ts"],
+      "rules": {
+        // vitest/require-top-level-describe puts a whole file in one
+        // function, which no size limit for functions can allow.
+        "eslint/max-lines-per-function": "off",
+        "eslint/max-statements": "off",
+        // The order of variants and options decides the order of classes,
+        // which the tests assert.
+        "eslint/sort-keys": "off",
+        // Numbers and null are inputs that cx must handle.
+        "eslint/no-magic-numbers": "off",
+        "unicorn/no-null": "off"
+      }
+    },
+    {
+      // Guarding each key halves the speed of objects and drops inherited
+      // keys, which clsx keeps.
+      "files": ["src/cx.ts"],
+      "rules": { "eslint/guard-for-in": "off" }
+    }
+  ],
+  // The docs site is plain browser JavaScript, outside the TypeScript project.
+  "ignorePatterns": ["dist", "docs"],
+  "env": {
+    "builtin": true
+  }
+}

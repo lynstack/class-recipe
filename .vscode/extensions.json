@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "TypeScriptTeam.native-preview",
+    "oxc.oxc-vscode",
+    "vitest.explorer"
+  ]
+}
