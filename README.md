@@ -93,7 +93,7 @@ props into class names. It differs from them in these ways:
 | Slots                      | Yes                       | No                               | Yes                             |
 | Variant without a default  | Required by its type      | Optional                         | Optional                        |
 | Conflict resolution        | Any join function, cached | Call `twMerge` on the result     | `tailwind-merge`, built in      |
-| Recipe calls per second    | 2.2 million               | 240,000                          | 170,000                         |
+| Recipe calls per second    | 2.2 million               | 235,000                          | 169,000                         |
 | Size, minified and gzipped | 1.8 kB                    | 0.5 kB                           | 3.6 kB                          |
 
 <!-- /report:why -->
@@ -541,14 +541,14 @@ overrides. Every library returns the same classes. Higher is better.
 
 | Recipe                           | Iterations per second | With `tailwind-merge` |
 | -------------------------------- | --------------------: | --------------------: |
-| class-recipe `1.0.0`             |             2,244,724 |               667,525 |
-| class-variance-authority `0.7.1` |               239,524 |               158,226 |
-| tailwind-variants `3.3.1`        |               169,706 |               170,760 |
+| class-recipe `1.0.0`             |             2,195,149 |               660,290 |
+| class-variance-authority `0.7.1` |               235,463 |               156,613 |
+| tailwind-variants `3.3.1`        |               169,158 |               169,292 |
 
 | Slot recipe               | Iterations per second | With `tailwind-merge` |
 | ------------------------- | --------------------: | --------------------: |
-| class-recipe `1.0.0`      |             1,281,816 |               833,515 |
-| tailwind-variants `3.3.1` |               131,425 |               142,189 |
+| class-recipe `1.0.0`      |             1,220,238 |               748,028 |
+| tailwind-variants `3.3.1` |               140,106 |               141,839 |
 
 <!-- /report:comparison -->
 
@@ -558,17 +558,17 @@ as its documentation recommends. class-variance-authority has no slots.
 
 <!-- report:cx -->
 
-Across every input, `cx`, `clsx`, and `classnames` stay within 15% of each
+Across every input, `cx`, `clsx`, and `classnames` stay within 25% of each
 other, and none is fastest on every input. Calls per second, in millions:
 
 | Input                 | class-recipe `1.0.0` | clsx `2.1.1` | classnames `2.5.1` |
 | --------------------- | -------------------: | -----------: | -----------------: |
-| Strings               |                 15.2 |         16.4 |               15.6 |
-| An object             |                 14.6 |         14.5 |               13.9 |
-| An array              |                 13.7 |         13.7 |               12.9 |
-| Nested arrays         |                  8.4 |          8.7 |                8.1 |
-| Mixed values          |                  7.7 |          7.3 |                6.9 |
-| A component's classes |                 15.4 |         13.7 |               14.7 |
+| Strings               |                 16.5 |         16.4 |               15.4 |
+| An object             |                 14.5 |         14.7 |               13.8 |
+| An array              |                 15.5 |         14.3 |               12.8 |
+| Nested arrays         |                  9.5 |          8.8 |                8.2 |
+| Mixed values          |                  7.5 |          7.1 |                6.9 |
+| A component's classes |                 15.7 |         13.3 |               14.0 |
 
 <!-- /report:cx -->
 
@@ -578,13 +578,13 @@ other, and none is fastest on every input. Calls per second, in millions:
 
 | Recipe        | Iterations per second |
 | ------------- | --------------------: |
-| With cache    |             2,192,565 |
-| Without cache |             1,222,344 |
+| With cache    |             2,153,674 |
+| Without cache |             1,272,935 |
 
 | Slot recipe   | Iterations per second |
 | ------------- | --------------------: |
-| With cache    |             1,536,433 |
-| Without cache |               547,662 |
+| With cache    |             1,574,600 |
+| Without cache |               567,054 |
 
 <!-- /report:cache -->
 

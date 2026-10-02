@@ -53,13 +53,16 @@ function cx(...inputs: ClassArray): string {
 function fromArray(values: ClassArray): string {
   let classNames = "";
   for (const value of values) {
-    const classNamesOfValue =
-      typeof value === "string" ? value : fromNonString(value);
-    if (classNamesOfValue) {
-      if (classNames) {
-        classNames += " ";
+    const isIncluded = Boolean(value);
+    if (isIncluded) {
+      const classNamesOfValue =
+        typeof value === "string" ? value : fromNonString(value);
+      if (classNamesOfValue) {
+        if (classNames) {
+          classNames += " ";
+        }
+        classNames += classNamesOfValue;
       }
-      classNames += classNamesOfValue;
     }
   }
   return classNames;
