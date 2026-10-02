@@ -4,11 +4,14 @@
 building class names. It exports:
 
 - `cx`, a drop-in replacement for `clsx`.
-- `createRecipe`, which maps variants to the class name of one element.
-- `createSlotRecipe`, which maps variants to the class names of several
-  elements (slots).
-- `createRecipes`, which returns all three bound to a custom join function,
-  such as `twMerge`.
+- `cva` (also exported as `createRecipe`), which maps variants to the class
+  name of one element.
+- `sva` (also exported as `createSlotRecipe`), which maps variants to the
+  class names of several elements (slots).
+- `createRecipes`, which returns `cx` and the recipe creators bound to a
+  custom join function, such as `twMerge`, or with the cache turned off.
+
+The README and the docs lead with the short names, `cva` and `sva`.
 
 It is a public package, published to npm as an ES module only.
 
