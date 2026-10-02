@@ -1,0 +1,1122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>class-recipe: type-safe class name variants for TypeScript</title>
+    <meta
+      name="description"
+      content="Fast, type-safe class name recipes with variants, compound variants, and slots, plus a clsx-compatible cx."
+    />
+    <link rel="canonical" href="https://lynstack.github.io/class-recipe/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="class-recipe" />
+    <meta
+      property="og:title"
+      content="class-recipe: type-safe class name variants for TypeScript"
+    />
+    <meta
+      property="og:description"
+      content="Fast, type-safe class name recipes with variants, compound variants, and slots, plus a clsx-compatible cx."
+    />
+    <meta
+      property="og:url"
+      content="https://lynstack.github.io/class-recipe/"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      try {
+        const theme = localStorage.getItem("theme");
+        if (theme === "light" || theme === "dark") {
+          document.documentElement.dataset.theme = theme;
+        }
+      } catch {}
+    </script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <header class="topbar">
+      <button
+        class="icon-button menu-button"
+        type="button"
+        aria-label="Open navigation"
+        aria-controls="sidebar"
+        aria-expanded="false"
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <a class="brand" href="#overview">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4.5 5H17a3.5 3.5 0 0 1 0 7H7a3.5 3.5 0 0 0 0 7h9" />
+          <circle cx="20" cy="19" r="1.7" />
+        </svg>
+        <span class="brand-name">class-recipe</span>
+        <span class="eyebrow">by lynstack</span>
+      </a>
+      <a
+        class="icon-button"
+        href="https://www.npmjs.com/package/@lynstack/class-recipe"
+        aria-label="npm package"
+        title="npm package"
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3M12 12l8-4.5M12 12v9M12 12L4 7.5M16 5.25l-8 4.5"
+          />
+        </svg>
+      </a>
+      <a
+        class="icon-button"
+        href="https://github.com/lynstack/class-recipe"
+        aria-label="GitHub repository"
+        title="GitHub repository"
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"
+          />
+        </svg>
+      </a>
+      <button
+        class="icon-button theme-toggle"
+        type="button"
+        aria-label="Switch to dark theme"
+        title="Switch to dark theme"
+      >
+        <svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3h.393a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 2.992z" />
+        </svg>
+        <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M8 12a4 4 0 1 0 8 0 4 4 0 1 0-8 0M3 12h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7-.7.7m0 11.4.7.7m-12.1-.7-.7.7"
+          />
+        </svg>
+      </button>
+    </header>
+
+    <div class="shell">
+      <nav class="sidebar" id="sidebar" aria-label="Documentation">
+        <div class="nav-group">
+          <p class="eyebrow" id="nav-get-started">Get started</p>
+          <ul aria-labelledby="nav-get-started">
+            <li><a class="nav-link" href="#overview">Overview</a></li>
+            <li><a class="nav-link" href="#installation">Installation</a></li>
+          </ul>
+        </div>
+        <div class="nav-group">
+          <p class="eyebrow" id="nav-api">API</p>
+          <ul aria-labelledby="nav-api">
+            <li>
+              <a class="nav-link" href="#cx"><code>cx</code></a>
+            </li>
+            <li>
+              <a class="nav-link" href="#cva"><code>cva</code></a>
+            </li>
+            <li>
+              <a class="nav-link" href="#sva"><code>sva</code></a>
+            </li>
+          </ul>
+        </div>
+        <div class="nav-group">
+          <p class="eyebrow" id="nav-guides">Guides</p>
+          <ul aria-labelledby="nav-guides">
+            <li>
+              <a class="nav-link" href="#conflict-free-recipes"
+                >Conflict-free recipes</a
+              >
+            </li>
+            <li>
+              <a class="nav-link" href="#tailwind-merge">tailwind-merge</a>
+            </li>
+            <li><a class="nav-link" href="#typescript">TypeScript</a></li>
+          </ul>
+        </div>
+        <div class="nav-group">
+          <p class="eyebrow" id="nav-reference">Reference</p>
+          <ul aria-labelledby="nav-reference">
+            <li><a class="nav-link" href="#performance">Performance</a></li>
+            <li><a class="nav-link" href="#api">Exports</a></li>
+            <li><a class="nav-link" href="#contributing">Contributing</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="scrim" aria-hidden="true"></div>
+
+      <main class="main" id="content">
+        <div class="content">
+          <section class="hero" id="overview">
+            <p class="eyebrow package-name">@lynstack/class-recipe</p>
+            <h1>Class name recipes, compiled once.</h1>
+            <p class="lead">
+              Fast, type-safe class name recipes for any CSS approach, with
+              variants, compound variants, slots, and a pluggable join function
+              such as <code>tailwind-merge</code>. It also includes
+              <code>cx</code>, a drop-in replacement for <code>clsx</code>.
+            </p>
+            <div class="actions">
+              <a class="button button-primary" href="#installation">
+                Get started
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M13 18l6-6M13 6l6 6" />
+                </svg>
+              </a>
+              <a
+                class="button button-secondary"
+                href="https://github.com/lynstack/class-recipe"
+                >View on GitHub</a
+              >
+            </div>
+
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">ts</span></div>
+              <pre
+                tabindex="0"
+              ><code data-lang="ts">import { cva } from "@lynstack/class-recipe";
+
+const button = cva({
+  base: "inline-flex items-center rounded-md font-medium",
+  variants: {
+    tone: {
+      neutral: "bg-gray-100 text-gray-900",
+      danger: "bg-red-600 text-white",
+    },
+    size: {
+      sm: "h-8 px-3 text-sm",
+      md: "h-10 px-4",
+    },
+  },
+  defaultVariants: { size: "md" },
+});
+
+button({ tone: "danger" });
+<span class="comment">// => "inline-flex items-center rounded-md font-medium bg-red-600 text-white h-10 px-4"</span></code></pre>
+            </div>
+
+            <dl class="rows">
+              <div>
+                <dt class="eyebrow">Type-safe</dt>
+                <dd>
+                  Variant names, options, and slots are inferred from the
+                  config. An unknown option or slot is a type error, and a
+                  variant without a default is required.
+                </dd>
+              </div>
+              <div>
+                <dt class="eyebrow">Fast</dt>
+                <dd>
+                  A recipe compiles its config once and caches the class name of
+                  each selection, so most calls are a lookup (see
+                  <a href="#performance">Performance</a>).
+                </dd>
+              </div>
+              <div>
+                <dt class="eyebrow">Pluggable</dt>
+                <dd>
+                  Bring your own join function, such as <code>twMerge</code>, to
+                  resolve conflicting classes. It runs once per selection, not
+                  on every call.
+                </dd>
+              </div>
+              <div>
+                <dt class="eyebrow">Small</dt>
+                <dd>No dependencies, ES modules only, and tree-shakable.</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section id="installation">
+            <p class="eyebrow section-eyebrow">Get started</p>
+            <div class="heading">
+              <h2>Installation</h2>
+              <a
+                class="heading-anchor"
+                href="#installation"
+                aria-label="Permalink to Installation"
+                >#</a
+              >
+            </div>
+            <div class="code" data-tabs>
+              <div class="code-head">
+                <div
+                  class="code-tabs"
+                  role="tablist"
+                  aria-label="Package manager"
+                >
+                  <button
+                    class="code-tab eyebrow"
+                    type="button"
+                    role="tab"
+                    id="tab-npm"
+                    aria-controls="panel-npm"
+                    aria-selected="true"
+                  >
+                    npm
+                  </button>
+                  <button
+                    class="code-tab eyebrow"
+                    type="button"
+                    role="tab"
+                    id="tab-pnpm"
+                    aria-controls="panel-pnpm"
+                    aria-selected="false"
+                    tabindex="-1"
+                  >
+                    pnpm
+                  </button>
+                  <button
+                    class="code-tab eyebrow"
+                    type="button"
+                    role="tab"
+                    id="tab-yarn"
+                    aria-controls="panel-yarn"
+                    aria-selected="false"
+                    tabindex="-1"
+                  >
+                    yarn
+                  </button>
+                </div>
+              </div>
+              <pre
+                tabindex="0"
+                id="panel-npm"
+                role="tabpanel"
+                aria-labelledby="tab-npm"
+              ><code data-lang="sh">npm install @lynstack/class-recipe</code></pre>
+              <pre
+                tabindex="0"
+                id="panel-pnpm"
+                role="tabpanel"
+                aria-labelledby="tab-pnpm"
+                hidden
+              ><code data-lang="sh">pnpm add @lynstack/class-recipe</code></pre>
+              <pre
+                tabindex="0"
+                id="panel-yarn"
+                role="tabpanel"
+                aria-labelledby="tab-yarn"
+                hidden
+              ><code data-lang="sh">yarn add @lynstack/class-recipe</code></pre>
+            </div>
+            <p>
+              The package is ESM only and targets ES2022. Its types require
+              TypeScript 5.4 or newer.
+            </p>
+          </section>
+
+          <section id="cx">
+            <p class="eyebrow section-eyebrow">API</p>
+            <div class="heading">
+              <h2><code>cx</code></h2>
+              <a class="heading-anchor" href="#cx" aria-label="Permalink to cx"
+                >#</a
+              >
+            </div>
+            <p>
+              <code>cx</code> joins class names and skips falsy values. It
+              accepts the same inputs as <code>clsx</code> (strings, numbers,
+              objects, and nested arrays) and returns the same output, so you
+              can replace <code>clsx</code> with it.
+            </p>
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">ts</span></div>
+              <pre
+                tabindex="0"
+              ><code data-lang="ts">import { cx } from "@lynstack/class-recipe";
+
+cx("btn", isActive &amp;&amp; "btn-active", { "btn-disabled": isDisabled });
+<span class="comment">// => "btn btn-active" when isActive is true and isDisabled is false</span>
+
+cx(["flex", ["items-center", null]], { hidden: false }, 0, "");
+<span class="comment">// => "flex items-center"</span></code></pre>
+            </div>
+          </section>
+
+          <section id="cva">
+            <p class="eyebrow section-eyebrow">API</p>
+            <div class="heading">
+              <h2><code>cva</code></h2>
+              <a
+                class="heading-anchor"
+                href="#cva"
+                aria-label="Permalink to cva"
+                >#</a
+              >
+            </div>
+            <p>
+              <code>cva</code> creates a recipe, which returns the class name of
+              one element for a selection of variants. It is also exported as
+              <code>createRecipe</code>. It takes one config object, unlike the
+              <code>cva</code> of <code>class-variance-authority</code>, which
+              takes the base classes as a separate argument.
+            </p>
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">ts</span></div>
+              <pre
+                tabindex="0"
+              ><code data-lang="ts">import { cva } from "@lynstack/class-recipe";
+
+const badge = cva({
+  <span class="comment">// Applied whatever the variants.</span>
+  base: "inline-flex rounded-full px-2 text-xs",
+  <span class="comment">// For each variant, the classes of each option.</span>
+  variants: {
+    tone: {
+      neutral: "bg-gray-100 text-gray-700",
+      success: "bg-green-100 text-green-800",
+      danger: "bg-red-100 text-red-800",
+    },
+    outlined: {
+      true: "ring-1 ring-inset ring-current",
+    },
+  },
+  <span class="comment">// Classes added when several variants match at the same time.</span>
+  compoundVariants: [
+    {
+      variants: { tone: ["success", "danger"], outlined: true },
+      className: "font-semibold",
+    },
+  ],
+});
+
+badge({ tone: "success" });
+<span class="comment">// => "inline-flex rounded-full px-2 text-xs bg-green-100 text-green-800"</span>
+
+badge({ tone: "danger", outlined: true, className: "uppercase" });
+<span class="comment">// => "inline-flex rounded-full px-2 text-xs bg-red-100 text-red-800 ring-1 ring-inset ring-current font-semibold uppercase"</span></code></pre>
+            </div>
+
+            <div class="heading">
+              <h3 id="default-and-required-variants">
+                Default and required variants
+              </h3>
+              <a
+                class="heading-anchor"
+                href="#default-and-required-variants"
+                aria-label="Permalink to Default and required variants"
+                >#</a
+              >
+            </div>
+            <p>
+              A variant listed in <code>defaultVariants</code> may be omitted,
+              and then uses its default. A variant without a default is
+              required, so a component cannot forget to choose, for example, its
+              tone. When every variant has a default, the argument itself is
+              optional.
+            </p>
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">ts</span></div>
+              <pre tabindex="0"><code data-lang="ts">const stack = cva({
+  variants: {
+    gap: { sm: "gap-2", md: "gap-4" },
+    direction: { row: "flex-row", column: "flex-col" },
+  },
+  defaultVariants: { gap: "md", direction: "column" },
+});
+
+stack(); <span class="comment">// => "gap-4 flex-col"</span>
+stack({ direction: "row" }); <span class="comment">// => "gap-4 flex-row"</span>
+stack({ gap: undefined }); <span class="comment">// => "gap-4 flex-col"</span></code></pre>
+            </div>
+
+            <div class="heading">
+              <h3 id="boolean-variants">Boolean variants</h3>
+              <a
+                class="heading-anchor"
+                href="#boolean-variants"
+                aria-label="Permalink to Boolean variants"
+                >#</a
+              >
+            </div>
+            <p>
+              A variant with an option named <code>"true"</code> or
+              <code>"false"</code> also accepts the booleans
+              <code>true</code> and <code>false</code>, and declares the missing
+              one of those two options without classes. A variant whose only
+              options are <code>"true"</code> and <code>"false"</code> is
+              optional and defaults to <code>false</code>.
+            </p>
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">ts</span></div>
+              <pre tabindex="0"><code data-lang="ts">const input = cva({
+  base: "rounded-md border",
+  variants: {
+    invalid: { true: "border-red-600", false: "border-gray-300" },
+    disabled: { true: "opacity-50" },
+  },
+});
+
+input(); <span class="comment">// => "rounded-md border border-gray-300"</span>
+input({ invalid: true, disabled: true });
+<span class="comment">// => "rounded-md border border-red-600 opacity-50"</span></code></pre>
+            </div>
+
+            <div class="heading">
+              <h3 id="compound-variants">Compound variants</h3>
+              <a
+                class="heading-anchor"
+                href="#compound-variants"
+                aria-label="Permalink to Compound variants"
+                >#</a
+              >
+            </div>
+            <p>
+              Each compound variant names, for some variants, the option or the
+              list of options it matches, and adds its
+              <code>className</code> when all of them match. A variant it leaves
+              out matches any option. Conditions are checked against the
+              selection after defaults are applied, and matching compound
+              variants are added in order, after the classes of the variants. A
+              compound variant that names an undeclared variant, or lists no
+              declared option for one, never matches.
+            </p>
+
+            <div class="heading">
+              <h3 id="overriding-classes">Overriding classes</h3>
+              <a
+                class="heading-anchor"
+                href="#overriding-classes"
+                aria-label="Permalink to Overriding classes"
+                >#</a
+              >
+            </div>
+            <p>
+              Pass <code>className</code> to add classes after every class of
+              the recipe. These classes are added, not substituted: one that
+              sets the same CSS property as a class of the recipe leaves both in
+              the class name. Design the recipe so that it needs no override
+              (see
+              <a href="#conflict-free-recipes">Writing conflict-free recipes</a
+              >), or use a join function such as <code>twMerge</code> (see
+              <a href="#tailwind-merge"
+                >Resolving conflicts with tailwind-merge</a
+              >) to let these classes replace conflicting ones.
+            </p>
+          </section>
+
+          <section id="sva">
+            <p class="eyebrow section-eyebrow">API</p>
+            <div class="heading">
+              <h2><code>sva</code></h2>
+              <a
+                class="heading-anchor"
+                href="#sva"
+                aria-label="Permalink to sva"
+                >#</a
+              >
+            </div>
+            <p>
+              <code>sva</code> creates a slot recipe, which styles a component
+              made of several elements, its slots, and returns an object with
+              the class name of every slot. It is also exported as
+              <code>createSlotRecipe</code>.
+            </p>
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">ts</span></div>
+              <pre
+                tabindex="0"
+              ><code data-lang="ts">import { sva } from "@lynstack/class-recipe";
+
+const card = sva({
+  slots: ["root", "header", "body"],
+  base: {
+    root: "rounded-lg border",
+    header: "font-semibold",
+    body: "text-gray-600",
+  },
+  variants: {
+    size: {
+      sm: { root: "p-3", header: "text-sm" },
+      md: { root: "p-5", header: "text-base" },
+    },
+    elevated: {
+      true: { root: "shadow-md" },
+    },
+  },
+  compoundVariants: [
+    {
+      variants: { size: "md", elevated: true },
+      classNames: { root: "shadow-lg" },
+    },
+  ],
+  defaultVariants: { size: "md" },
+});
+
+const classNames = card({ classNames: { body: "italic" } });
+classNames.root; <span class="comment">// => "rounded-lg border p-5"</span>
+classNames.header; <span class="comment">// => "font-semibold text-base"</span>
+classNames.body; <span class="comment">// => "text-gray-600 italic"</span></code></pre>
+            </div>
+            <p>
+              Every slot is present in the result, as <code>""</code> when it
+              has no classes. The result is frozen, and calling the recipe again
+              with the same variants returns the same object, which keeps props
+              stable for memoized components. Passing
+              <code>classNames</code> with at least one class returns a new
+              object.
+            </p>
+          </section>
+
+          <section id="conflict-free-recipes">
+            <p class="eyebrow section-eyebrow">Guides</p>
+            <div class="heading">
+              <h2>Writing conflict-free recipes</h2>
+              <a
+                class="heading-anchor"
+                href="#conflict-free-recipes"
+                aria-label="Permalink to Writing conflict-free recipes"
+                >#</a
+              >
+            </div>
+            <p>
+              By default, classes are joined with <code>cx</code>, which keeps
+              every class. When two classes set the same CSS property, such as
+              <code>px-4</code> and <code>px-2</code>, the one defined later in
+              the stylesheet wins, whatever their order in the class name. A
+              recipe avoids this by construction when it sets each CSS property
+              of an element in one place:
+            </p>
+            <ul>
+              <li>
+                <strong
+                  >Set each property in <code>base</code> or in one variant,
+                  never in both.</strong
+                >
+                Give every option of the variant its own class, rather than a
+                default in <code>base</code> that an option overrides.
+              </li>
+              <li>
+                <strong
+                  >Turn props that set the same property into one
+                  variant.</strong
+                >
+                For example, derive a <code>state</code> of <code>idle</code>,
+                <code>loading</code>, or <code>disabled</code> from the
+                <code>loading</code> and <code>disabled</code> props, rather
+                than a variant for each.
+              </li>
+              <li>
+                <strong
+                  >Set a property that depends on several variants only in
+                  compound variants</strong
+                >, with one compound variant for each combination.
+              </li>
+              <li>
+                <strong>Add an option rather than an override.</strong>
+                <code>className</code>, <code>classNames</code>, and compound
+                variants add classes after the variants; they never remove one.
+              </li>
+            </ul>
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">ts</span></div>
+              <pre
+                tabindex="0"
+              ><code data-lang="ts"><span class="comment">// Conflicting: base and the variant both set the border color.</span>
+const conflicting = cva({
+  base: "rounded-md border border-gray-300",
+  variants: { invalid: { true: "border-red-600" } },
+});
+
+conflicting({ invalid: true });
+<span class="comment">// => "rounded-md border border-gray-300 border-red-600"</span>
+
+<span class="comment">// Conflict-free: only the variant sets it.</span>
+const input = cva({
+  base: "rounded-md border",
+  variants: {
+    invalid: { true: "border-red-600", false: "border-gray-300" },
+  },
+});
+
+input({ invalid: true }); <span class="comment">// => "rounded-md border border-red-600"</span></code></pre>
+            </div>
+            <p>
+              These rules, with more examples, are available as an agent skill.
+              Install it in your project with the
+              <a href="https://skills.sh">skills</a> CLI, or give your coding
+              agent the prompt to use it in the current session without
+              installing it:
+            </p>
+            <div class="code" data-tabs>
+              <div class="code-head">
+                <div class="code-tabs" role="tablist" aria-label="Skill setup">
+                  <button
+                    class="code-tab eyebrow"
+                    type="button"
+                    role="tab"
+                    id="tab-skill-command"
+                    aria-controls="panel-skill-command"
+                    aria-selected="true"
+                  >
+                    Command
+                  </button>
+                  <button
+                    class="code-tab eyebrow"
+                    type="button"
+                    role="tab"
+                    id="tab-skill-prompt"
+                    aria-controls="panel-skill-prompt"
+                    aria-selected="false"
+                    tabindex="-1"
+                  >
+                    Prompt
+                  </button>
+                </div>
+              </div>
+              <pre
+                tabindex="0"
+                id="panel-skill-command"
+                role="tabpanel"
+                aria-labelledby="tab-skill-command"
+              ><code data-lang="sh">npx skills add lynstack/class-recipe</code></pre>
+              <pre
+                tabindex="0"
+                id="panel-skill-prompt"
+                role="tabpanel"
+                aria-labelledby="tab-skill-prompt"
+                hidden
+              ><code data-lang="text">Run `npx skills use lynstack/class-recipe` and follow the generated skill instructions now. Read its complete output, redirecting it to a temporary file first if necessary.</code></pre>
+            </div>
+            <p>
+              The skill also ships in the package, so you can point your agent
+              to
+              <code
+                >node_modules/@lynstack/class-recipe/skills/class-recipe/SKILL.md</code
+              >, or copy the <code>skills/class-recipe</code> folder into your
+              agent's skills folder, such as <code>.claude/skills</code>.
+            </p>
+          </section>
+
+          <section id="tailwind-merge">
+            <p class="eyebrow section-eyebrow">Guides</p>
+            <div class="heading">
+              <h2>Resolving conflicts with tailwind-merge</h2>
+              <a
+                class="heading-anchor"
+                href="#tailwind-merge"
+                aria-label="Permalink to Resolving conflicts with tailwind-merge"
+                >#</a
+              >
+            </div>
+            <p>
+              To resolve conflicting classes, such as <code>px-4</code> and
+              <code>px-2</code>, rather than avoid them, create the functions
+              with a join function of your choice, once, in a module of your
+              own:
+            </p>
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">ts</span></div>
+              <pre
+                tabindex="0"
+              ><code data-lang="ts"><span class="comment">// src/lib/recipe.ts</span>
+import { createRecipes } from "@lynstack/class-recipe";
+import { twMerge } from "tailwind-merge";
+
+export const { cx, cva, sva } = createRecipes({ join: twMerge });</code></pre>
+            </div>
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">ts</span></div>
+              <pre
+                tabindex="0"
+              ><code data-lang="ts">import { cva, cx } from "./lib/recipe";
+
+const button = cva({
+  base: "rounded-md px-4 py-2",
+  variants: { size: { sm: "px-2 py-1", md: "" } },
+});
+
+button({ size: "sm", className: "px-3" }); <span class="comment">// => "rounded-md py-1 px-3"</span>
+cx("p-2", isLarge &amp;&amp; "p-4"); <span class="comment">// => "p-4" when isLarge is true</span></code></pre>
+            </div>
+            <p>
+              A join function receives the class strings in order of precedence,
+              lowest first, and returns the final class name: any
+              <code>(...classNames: readonly string[]) =&gt; string</code>
+              works. It always receives at least one class string, and never an
+              empty one. A recipe calls it once for each declared selection of
+              variants and caches the result, then again for each call that
+              passes <code>className</code> or <code>classNames</code>, or an
+              undeclared option. The configured <code>cx</code> first joins its
+              inputs like the default <code>cx</code>, then passes the result to
+              the join function. <code>createRecipes</code> also returns
+              <code>createRecipe</code> and <code>createSlotRecipe</code>, the
+              same functions as the <code>cva</code> and <code>sva</code> it
+              returns.
+            </p>
+
+            <div class="heading">
+              <h3 id="turning-off-the-cache">Turning off the cache</h3>
+              <a
+                class="heading-anchor"
+                href="#turning-off-the-cache"
+                aria-label="Permalink to Turning off the cache"
+                >#</a
+              >
+            </div>
+            <p>
+              Recipes cache the class names of each declared selection of
+              variants (see <a href="#performance">Performance</a>). Pass
+              <code>cache: false</code> to build them on every call instead,
+              alone or together with <code>join</code>:
+            </p>
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">ts</span></div>
+              <pre
+                tabindex="0"
+              ><code data-lang="ts">export const { cx, cva, sva } = createRecipes({ cache: false });</code></pre>
+            </div>
+            <p>
+              Without the cache, a slot recipe returns a new object on every
+              call, even for the same variants.
+            </p>
+          </section>
+
+          <section id="typescript">
+            <p class="eyebrow section-eyebrow">Guides</p>
+            <div class="heading">
+              <h2>TypeScript</h2>
+              <a
+                class="heading-anchor"
+                href="#typescript"
+                aria-label="Permalink to TypeScript"
+                >#</a
+              >
+            </div>
+            <p>
+              Use <code>VariantsOf</code> to type the props of a component from
+              its recipe.
+            </p>
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">tsx</span></div>
+              <pre
+                tabindex="0"
+              ><code data-lang="tsx">import { cva, type VariantsOf } from "@lynstack/class-recipe";
+import type { ComponentProps } from "react";
+
+const button = cva({
+  base: "inline-flex rounded-md",
+  variants: {
+    tone: { neutral: "bg-gray-100", danger: "bg-red-600 text-white" },
+    size: { sm: "h-8 px-3", md: "h-10 px-4" },
+  },
+  defaultVariants: { size: "md" },
+});
+
+type ButtonProps = ComponentProps&lt;"button"&gt; &amp; VariantsOf&lt;typeof button&gt;;
+<span class="comment">// VariantsOf&lt;typeof button&gt; is</span>
+<span class="comment">// { readonly tone: "neutral" | "danger"; readonly size?: "sm" | "md" | undefined }</span>
+
+export function Button({ tone, size, className, ...props }: ButtonProps) {
+  return &lt;button className={button({ tone, size, className })} {...props} /&gt;;
+}</code></pre>
+            </div>
+            <p>
+              The names <code>className</code> and <code>classNames</code> are
+              reserved and cannot be used as variant names.
+            </p>
+          </section>
+
+          <section id="performance">
+            <p class="eyebrow section-eyebrow">Reference</p>
+            <div class="heading">
+              <h2>Performance</h2>
+              <a
+                class="heading-anchor"
+                href="#performance"
+                aria-label="Permalink to Performance"
+                >#</a
+              >
+            </div>
+            <p>
+              Performance is the first goal of this library, and it is measured
+              on every change to it.
+            </p>
+            <p>
+              A recipe compiles its config once, when it is created: each
+              variant numbers its options, so a selection of variants becomes
+              one integer. Calling the recipe reads each variant's option, looks
+              up its number, and returns the class name cached under that
+              integer. The first call for a selection, or a call with an
+              undeclared option, builds the class name by concatenating
+              precomputed strings. The cache holds at most one entry per
+              combination of declared options, since an undeclared option is
+              never cached.
+            </p>
+
+            <div class="heading">
+              <h3 id="results">Results</h3>
+              <a
+                class="heading-anchor"
+                href="#results"
+                aria-label="Permalink to Results"
+                >#</a
+              >
+            </div>
+            <p>
+              Measured on an Apple M1 Pro with Node.js 24.21.0, against the
+              built package. Each iteration calls a recipe with six different
+              selections, which cover default variants, compound variants,
+              boolean variants, and <code>className</code> overrides. Higher is
+              better.
+            </p>
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="Benchmark results"
+            >
+              <table>
+                <caption class="visually-hidden">
+                  Iterations per second, with and without the cache
+                </caption>
+                <thead>
+                  <tr>
+                    <th class="eyebrow" scope="col">Benchmark</th>
+                    <th class="eyebrow number" scope="col">Iterations/s</th>
+                    <th class="eyebrow bar-cell" scope="col">
+                      <span class="visually-hidden"
+                        >Relative to the fastest</span
+                      >
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Recipe, with cache</td>
+                    <td class="number">2,259,595</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar"
+                        role="img"
+                        aria-label="100% of the fastest"
+                      >
+                        <span style="width: 100%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="muted">Recipe, without cache</td>
+                    <td class="number">1,270,927</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar bar-uncached"
+                        role="img"
+                        aria-label="56% of the fastest"
+                      >
+                        <span style="width: 56.2%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Slot recipe, with cache</td>
+                    <td class="number">1,588,326</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar"
+                        role="img"
+                        aria-label="70% of the fastest"
+                      >
+                        <span style="width: 70.3%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="muted">Slot recipe, without cache</td>
+                    <td class="number">569,028</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar bar-uncached"
+                        role="img"
+                        aria-label="25% of the fastest"
+                      >
+                        <span style="width: 25.2%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Across six input shapes, <code>cx</code> runs between 7.8 and 21
+              million times per second.
+            </p>
+
+            <div class="heading">
+              <h3 id="method">Method</h3>
+              <a
+                class="heading-anchor"
+                href="#method"
+                aria-label="Permalink to Method"
+                >#</a
+              >
+            </div>
+            <ul>
+              <li>
+                The benchmarks first check that each call returns the expected
+                classes.
+              </li>
+              <li>
+                They import the package by its name, so they run the built
+                bundle, not the sources. The test runner reads module exports
+                through getters, so each benchmark holds the function under test
+                in a local binding to keep that cost out of the measurement.
+              </li>
+              <li>
+                Each benchmark adds up the length of the class names it gets, so
+                the measurement adds no work of its own, such as hashing
+                strings.
+              </li>
+              <li>
+                The benchmarks assert that a recipe and a slot recipe are faster
+                with their cache than without it.
+              </li>
+            </ul>
+            <p>
+              Run them with <code>pnpm bench</code>, which builds the package
+              first. They are not part of CI, because shared runners are too
+              noisy for timing assertions.
+            </p>
+          </section>
+
+          <section id="api">
+            <p class="eyebrow section-eyebrow">Reference</p>
+            <div class="heading">
+              <h2>Exports</h2>
+              <a
+                class="heading-anchor"
+                href="#api"
+                aria-label="Permalink to Exports"
+                >#</a
+              >
+            </div>
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="Exports"
+            >
+              <table>
+                <thead>
+                  <tr>
+                    <th class="eyebrow" scope="col">Export</th>
+                    <th class="eyebrow" scope="col">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>cx</code></td>
+                    <td>
+                      Joins class names, skipping falsy values. Compatible with
+                      <code>clsx</code>.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>cva</code></td>
+                    <td>
+                      Creates a recipe that returns the class name of one
+                      element.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>sva</code></td>
+                    <td>
+                      Creates a slot recipe that returns the class names of
+                      several elements.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>createRecipe</code></td>
+                    <td>
+                      The same function as <code>cva</code>, under a longer
+                      name.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>createSlotRecipe</code></td>
+                    <td>
+                      The same function as <code>sva</code>, under a longer
+                      name.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>createRecipes</code></td>
+                    <td>
+                      Returns <code>cx</code> and the recipe creators with a
+                      custom join or cache setting.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>VariantsOf</code></td>
+                    <td>
+                      The variants a recipe accepts, without
+                      <code>className</code> or <code>classNames</code>.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Every export is documented with TSDoc, so your editor shows the
+              full reference, including the types of each config and its props.
+            </p>
+          </section>
+
+          <section id="contributing">
+            <p class="eyebrow section-eyebrow">Reference</p>
+            <div class="heading">
+              <h2>Contributing</h2>
+              <a
+                class="heading-anchor"
+                href="#contributing"
+                aria-label="Permalink to Contributing"
+                >#</a
+              >
+            </div>
+            <p>The project uses pnpm and Node.js 24 LTS.</p>
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">sh</span></div>
+              <pre tabindex="0"><code data-lang="sh">pnpm install
+pnpm check <span class="comment"># build, package checks, typecheck, lint, format check, tests</span>
+pnpm bench <span class="comment"># build, then benchmarks</span>
+pnpm test:coverage <span class="comment"># tests with a coverage report</span></code></pre>
+            </div>
+            <p>
+              Read
+              <a
+                href="https://github.com/lynstack/class-recipe/blob/main/AGENTS.md"
+                >AGENTS.md</a
+              >
+              for the project's rules. Commits follow
+              <a href="https://www.conventionalcommits.org/"
+                >Conventional Commits</a
+              >.
+            </p>
+          </section>
+
+          <footer class="footer">
+            <span
+              ><a
+                href="https://github.com/lynstack/class-recipe/blob/main/LICENSE"
+                >MIT License</a
+              ></span
+            >
+            <span class="eyebrow">A lynstack project</span>
+          </footer>
+        </div>
+      </main>
+    </div>
+    <p class="visually-hidden" role="status" id="announcer"></p>
+  </body>
+</html>
