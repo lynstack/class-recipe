@@ -105,6 +105,15 @@
       }
     },
     {
+      // The scripts are Node.js programs, not tests, and run outside the
+      // package.
+      "files": ["scripts/**/*.ts"],
+      "rules": {
+        "import/no-nodejs-modules": "off",
+        "vitest/require-hook": "off"
+      }
+    },
+    {
       // Guarding each key halves the speed of objects and drops inherited
       // keys, which clsx keeps.
       "files": ["src/cx.ts"],

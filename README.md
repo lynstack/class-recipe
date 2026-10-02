@@ -1,8 +1,14 @@
 # class-recipe
 
+[![npm](https://img.shields.io/npm/v/@lynstack/class-recipe)](https://www.npmjs.com/package/@lynstack/class-recipe)
+[![CI](https://github.com/lynstack/class-recipe/actions/workflows/ci.yml/badge.svg)](https://github.com/lynstack/class-recipe/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 Fast, type-safe class name recipes for any CSS approach, with variants,
 compound variants, slots, and a pluggable join function such as
 `tailwind-merge`. It also includes `cx`, a drop-in replacement for `clsx`.
+
+[Documentation](https://lynstack.github.io/class-recipe/)
 
 ```ts
 import { cva } from "@lynstack/class-recipe";
@@ -26,33 +32,79 @@ button({ tone: "danger" });
 // => "inline-flex items-center rounded-md font-medium bg-red-600 text-white h-10 px-4"
 ```
 
+- **Fast.** A recipe compiles its config once and caches the class name of
+  each selection, so most calls are a lookup. It runs about <!-- report:speedup -->9<!-- /report:speedup -->
+  times as many calls per second as `class-variance-authority` (see
+  [Performance](#performance)).
 - **Type-safe.** Variant names, options, and slots are inferred from the
   config. An unknown option or slot is a type error, and a variant without
-  a default is required.
-- **Fast.** A recipe compiles its config once and caches the class name
-  of each selection, so most calls are a lookup (see
-  [Performance](#performance)).
+  a default is required, so a component cannot forget to choose it.
 - **Pluggable.** Bring your own join function, such as `twMerge`, to
   resolve conflicting classes. It runs once per selection, not on every
   call.
-- **Small.** No dependencies, ES modules only, and tree-shakable.
+- **Small.** <!-- report:size-all -->1.8 kB<!-- /report:size-all --> minified
+  and gzipped for the whole package, <!-- report:size-cx -->0.2 kB<!-- /report:size-cx -->
+  for `cx` alone. No dependencies, ES modules only, and tree-shakable (see
+  [Size](#size)).
+
+## Contents
+
+- [Installation](#installation)
+- [Why class-recipe](#why-class-recipe)
+- [`cx`](#cx)
+- [`cva`](#cva)
+- [`sva`](#sva)
+- [Writing conflict-free recipes](#writing-conflict-free-recipes)
+- [Resolving conflicts with tailwind-merge](#resolving-conflicts-with-tailwind-merge)
+- [TypeScript](#typescript)
+- [Migrating from class-variance-authority](#migrating-from-class-variance-authority)
+- [Performance](#performance)
+- [Size](#size)
+- [API](#api)
 
 ## Installation
 
-```sh
+```sh tab=npm
 npm install @lynstack/class-recipe
 ```
 
-```sh
+```sh tab=pnpm
 pnpm add @lynstack/class-recipe
 ```
 
-```sh
+```sh tab=yarn
 yarn add @lynstack/class-recipe
 ```
 
 The package is ESM only and targets ES2022. Its types require TypeScript
 5.4 or newer.
+
+## Why class-recipe
+
+class-recipe solves the same problem as
+[class-variance-authority](https://cva.style) and
+[tailwind-variants](https://www.tailwind-variants.org): turning component
+props into class names. It differs from them in these ways:
+
+<!-- report:why -->
+
+|                            | class-recipe `1.0.0`      | class-variance-authority `0.7.1` | tailwind-variants `3.3.1`, lite |
+| -------------------------- | ------------------------- | -------------------------------- | ------------------------------- |
+| Slots                      | Yes                       | No                               | Yes                             |
+| Variant without a default  | Required by its type      | Optional                         | Optional                        |
+| Conflict resolution        | Any join function, cached | Call `twMerge` on the result     | `tailwind-merge`, built in      |
+| Recipe calls per second    | 2.2 million               | 240,000                          | 170,000                         |
+| Size, minified and gzipped | 1.8 kB                    | 0.5 kB                           | 3.6 kB                          |
+
+<!-- /report:why -->
+
+The calls per second come from the [benchmarks](#compared-with-other-libraries),
+and the sizes from [Size](#size).
+
+Choose class-variance-authority if bundle size matters more to you than
+call speed and you need no slots. Choose tailwind-variants if you need to
+compose recipes with `extend` or apply classes to several slots at once
+with `compoundSlots`; class-recipe has neither.
 
 ## `cx`
 
@@ -73,9 +125,7 @@ cx(["flex", ["items-center", null]], { hidden: false }, 0, "");
 ## `cva`
 
 `cva` creates a recipe, which returns the class name of one element for a
-selection of variants. It is also exported as `createRecipe`. It takes one
-config object, unlike the `cva` of `class-variance-authority`, which takes
-the base classes as a separate argument.
+selection of variants. It is also exported as `createRecipe`.
 
 ```ts
 import { cva } from "@lynstack/class-recipe";
@@ -94,21 +144,18 @@ const badge = cva({
       true: "ring-1 ring-inset ring-current",
     },
   },
-  // Classes added when several variants match at the same time.
-  compoundVariants: [
-    {
-      variants: { tone: ["success", "danger"], outlined: true },
-      className: "font-semibold",
-    },
-  ],
 });
 
 badge({ tone: "success" });
 // => "inline-flex rounded-full px-2 text-xs bg-green-100 text-green-800"
 
 badge({ tone: "danger", outlined: true, className: "uppercase" });
-// => "inline-flex rounded-full px-2 text-xs bg-red-100 text-red-800 ring-1 ring-inset ring-current font-semibold uppercase"
+// => "inline-flex rounded-full px-2 text-xs bg-red-100 text-red-800 ring-1 ring-inset ring-current uppercase"
 ```
+
+Classes are added in this order: `base`, then each variant in the order
+the config declares it, then the matching compound variants, then
+`className`.
 
 ### Default and required variants
 
@@ -154,13 +201,42 @@ input({ invalid: true, disabled: true });
 
 ### Compound variants
 
-Each compound variant names, for some variants, the option or the list of
-options it matches, and adds its `className` when all of them match. A
-variant it leaves out matches any option. Conditions are checked against
-the selection after defaults are applied, and matching compound variants
-are added in order, after the classes of the variants. A compound variant
-that names an undeclared variant, or lists no declared option for one,
-never matches.
+A compound variant adds its `className` when several variants have
+particular options at the same time. For each variant it names, it gives
+one option or a list of options; a variant it leaves out matches any
+option.
+
+```ts
+const button = cva({
+  base: "inline-flex rounded-md",
+  variants: {
+    tone: { neutral: "bg-gray-100", danger: "bg-red-600 text-white" },
+    size: { sm: "h-8 px-3", md: "h-10 px-4" },
+    outlined: { true: "ring-1 ring-inset" },
+  },
+  compoundVariants: [
+    // When tone is danger and size is md.
+    { variants: { tone: "danger", size: "md" }, className: "font-semibold" },
+    // When tone is neutral and outlined is true, whatever the size.
+    {
+      variants: { tone: "neutral", outlined: true },
+      className: "ring-gray-300",
+    },
+  ],
+  defaultVariants: { size: "md" },
+});
+
+button({ tone: "danger" });
+// => "inline-flex rounded-md bg-red-600 text-white h-10 px-4 font-semibold"
+
+button({ tone: "neutral", size: "sm", outlined: true });
+// => "inline-flex rounded-md bg-gray-100 h-8 px-3 ring-1 ring-inset ring-gray-300"
+```
+
+Conditions are checked after defaults are applied, which is why the first
+call matches `size: "md"` without passing it. Matching compound variants
+are added in the order they are declared. A compound variant that names an
+undeclared variant, or lists no declared option for one, never matches.
 
 ### Overriding classes
 
@@ -172,6 +248,13 @@ recipes](#writing-conflict-free-recipes)), or use a join function such as
 `twMerge` (see [Resolving conflicts with
 tailwind-merge](#resolving-conflicts-with-tailwind-merge)) to let these
 classes replace conflicting ones.
+
+### Undeclared options
+
+The types accept only the options the config declares. A value from
+untyped data can still bypass them; an option the config does not declare
+adds no classes for its variant, and its class name is built on every call
+instead of being cached.
 
 ## `sva`
 
@@ -201,17 +284,26 @@ const card = sva({
   compoundVariants: [
     {
       variants: { size: "md", elevated: true },
-      classNames: { root: "shadow-lg" },
+      classNames: { header: "border-b" },
     },
   ],
   defaultVariants: { size: "md" },
 });
 
-const classNames = card({ classNames: { body: "italic" } });
-classNames.root; // => "rounded-lg border p-5"
-classNames.header; // => "font-semibold text-base"
-classNames.body; // => "text-gray-600 italic"
+const elevated = card({ elevated: true });
+elevated.root; // => "rounded-lg border p-5 shadow-md"
+elevated.header; // => "font-semibold text-base border-b"
+elevated.body; // => "text-gray-600"
+
+const small = card({ size: "sm", classNames: { body: "italic" } });
+small.root; // => "rounded-lg border p-3"
+small.header; // => "font-semibold text-sm"
+small.body; // => "text-gray-600 italic"
 ```
+
+A slot recipe follows the same rules as a recipe, with an object of
+classes per slot wherever a recipe takes a string, and `classNames`
+instead of `className`.
 
 Every slot is present in the result, as `""` when it has no classes. The
 result is frozen, and calling the recipe again with the same variants
@@ -331,7 +423,8 @@ for the same variants.
 
 ## TypeScript
 
-Use `VariantsOf` to type the props of a component from its recipe.
+Use `VariantsOf` to type the props of a component from its recipe or slot
+recipe.
 
 ```tsx
 import { cva, type VariantsOf } from "@lynstack/class-recipe";
@@ -356,9 +449,71 @@ export function Button({ tone, size, className, ...props }: ButtonProps) {
 ```
 
 The names `className` and `classNames` are reserved and cannot be used as
-variant names.
+variant names. The package also exports the types of every config, props
+object, and recipe, such as `RecipeConfig` and `SlotRecipeProps`, for
+code that builds on them.
+
+## Migrating from class-variance-authority
+
+The concepts are the same, so most recipes move over with a few
+mechanical changes:
+
+| class-variance-authority              | class-recipe                                            |
+| ------------------------------------- | ------------------------------------------------------- |
+| `cva(base, config)`                   | `cva({ base, ...config })`                              |
+| Arrays of classes                     | One string of classes for `base` and for each option    |
+| `{ intent: "primary", class: "..." }` | `{ variants: { intent: "primary" }, className: "..." }` |
+| `class` or `className` prop           | `className` prop                                        |
+| `VariantProps<typeof button>`         | `VariantsOf<typeof button>`                             |
+| `twMerge(button(props))`              | `createRecipes({ join: twMerge })`, once                |
+| `cx` (`clsx`)                         | `cx`                                                    |
+
+```ts tab=Before
+// class-variance-authority
+const button = cva("rounded-md font-medium", {
+  variants: {
+    intent: { primary: "bg-blue-600 text-white", secondary: "bg-gray-100" },
+    size: { sm: "h-8 px-3", md: "h-10 px-4" },
+  },
+  compoundVariants: [{ intent: "primary", size: "md", class: "shadow-sm" }],
+  defaultVariants: { intent: "primary", size: "md" },
+});
+```
+
+```ts tab=After
+// class-recipe
+const button = cva({
+  base: "rounded-md font-medium",
+  variants: {
+    intent: { primary: "bg-blue-600 text-white", secondary: "bg-gray-100" },
+    size: { sm: "h-8 px-3", md: "h-10 px-4" },
+  },
+  compoundVariants: [
+    { variants: { intent: "primary", size: "md" }, className: "shadow-sm" },
+  ],
+  defaultVariants: { intent: "primary", size: "md" },
+});
+```
+
+Two behaviors change:
+
+- **A variant without a default becomes required.** Every call that omits
+  it is a type error. Add a default to keep it optional.
+- **A boolean variant without a default uses its `false` option.**
+  class-variance-authority adds no classes for it when the prop is
+  omitted.
 
 ## Performance
+
+<!-- report:measurement -->
+
+> **Measured on October 2, 2026.**
+>
+> On an Apple M1 Pro with Node.js 24.21.0, against class-recipe `1.0.0`,
+> class-variance-authority `0.7.1`, tailwind-variants `3.3.1`,
+> tailwind-merge `3.7.0`, clsx `2.1.1`, and classnames `2.5.1`.
+
+<!-- /report:measurement -->
 
 Performance is the first goal of this library, and it is measured on every
 change to it.
@@ -368,32 +523,75 @@ its options, so a selection of variants becomes one integer. Calling the
 recipe reads each variant's option, looks up its number, and returns the
 class name cached under that integer. The first call for a selection, or a
 call with an undeclared option, builds the class name by concatenating
-precomputed strings. The cache holds at most one entry per combination of
-declared options, since an undeclared option is never cached.
+precomputed strings.
 
-### Results
+The cache belongs to the recipe, so create each recipe once, at the top
+level of a module, not inside a component. It grows with the selections
+the recipe is called with, up to one entry per combination of declared
+options.
 
-Measured on an Apple M1 Pro with Node.js 24.21.0, against the built
-package. Each iteration calls a recipe with six different selections, which
-cover default variants, compound variants, boolean variants, and
-`className` overrides. Higher is better.
+### Compared with other libraries
+
+Each benchmark runs against the built package. Each iteration calls the
+same recipe, written for each library, with six different selections, which
+cover default variants, compound variants, boolean variants, and class
+overrides. Every library returns the same classes. Higher is better.
+
+<!-- report:comparison -->
+
+| Recipe                           | Iterations per second | With `tailwind-merge` |
+| -------------------------------- | --------------------: | --------------------: |
+| class-recipe `1.0.0`             |             2,244,724 |               667,525 |
+| class-variance-authority `0.7.1` |               239,524 |               158,226 |
+| tailwind-variants `3.3.1`        |               169,706 |               170,760 |
+
+| Slot recipe               | Iterations per second | With `tailwind-merge` |
+| ------------------------- | --------------------: | --------------------: |
+| class-recipe `1.0.0`      |             1,281,816 |               833,515 |
+| tailwind-variants `3.3.1` |               131,425 |               142,189 |
+
+<!-- /report:comparison -->
+
+Without `tailwind-merge`, tailwind-variants runs from its `lite` entry
+point. With it, class-variance-authority calls `twMerge` on every result,
+as its documentation recommends. class-variance-authority has no slots.
+
+<!-- report:cx -->
+
+Across every input, `cx`, `clsx`, and `classnames` stay within 15% of each
+other, and none is fastest on every input. Calls per second, in millions:
+
+| Input                 | class-recipe `1.0.0` | clsx `2.1.1` | classnames `2.5.1` |
+| --------------------- | -------------------: | -----------: | -----------------: |
+| Strings               |                 15.2 |         16.4 |               15.6 |
+| An object             |                 14.6 |         14.5 |               13.9 |
+| An array              |                 13.7 |         13.7 |               12.9 |
+| Nested arrays         |                  8.4 |          8.7 |                8.1 |
+| Mixed values          |                  7.7 |          7.3 |                6.9 |
+| A component's classes |                 15.4 |         13.7 |               14.7 |
+
+<!-- /report:cx -->
+
+### With and without the cache
+
+<!-- report:cache -->
 
 | Recipe        | Iterations per second |
 | ------------- | --------------------: |
-| With cache    |             2,259,595 |
-| Without cache |             1,270,927 |
+| With cache    |             2,192,565 |
+| Without cache |             1,222,344 |
 
 | Slot recipe   | Iterations per second |
 | ------------- | --------------------: |
-| With cache    |             1,588,326 |
-| Without cache |               569,028 |
+| With cache    |             1,536,433 |
+| Without cache |               547,662 |
 
-Across six input shapes, `cx` runs between 7.8 and 21 million times per
-second.
+<!-- /report:cache -->
 
 ### Method
 
-- The benchmarks first check that each call returns the expected classes.
+- The benchmarks first check that each call returns the expected classes,
+  and that every library compared returns the same ones.
 - They import the package by its name, so they run the built bundle, not
   the sources. The test runner reads module exports through getters, so
   each benchmark holds the function under test in a local binding to keep
@@ -403,8 +601,31 @@ second.
 - The benchmarks assert that a recipe and a slot recipe are faster with
   their cache than without it.
 
-Run them with `pnpm bench`, which builds the package first. They are not
-part of CI, because shared runners are too noisy for timing assertions.
+Run them with `pnpm bench`, which builds the package first, or with
+`pnpm report`, which also writes the results above. The comparisons with
+other libraries are in the `*.compare.bench.ts` files. The
+benchmarks are not part of CI, because shared runners are too noisy for
+timing assertions.
+
+## Size
+
+<!-- report:size -->
+
+Each row bundles only the named exports, minified with Rolldown `1.2.12` and
+compressed with gzip, so it shows what an app that imports them ships.
+
+| Imports    | Minified | Minified and gzipped |
+| ---------- | -------: | -------------------: |
+| `cx`       |   0.4 kB |               0.2 kB |
+| `cva`      |   3.2 kB |               1.3 kB |
+| `sva`      |   3.7 kB |               1.5 kB |
+| Everything |   4.6 kB |               1.8 kB |
+
+Measured the same way, class-variance-authority with `clsx` takes 0.5 kB,
+tailwind-variants takes 3.6 kB from its `lite` entry point,
+and `tailwind-merge`, which any of them may add, takes 8.5 kB.
+
+<!-- /report:size -->
 
 ## API
 
@@ -430,6 +651,8 @@ pnpm install
 pnpm check # build, package checks, typecheck, lint, format check, tests
 pnpm bench # build, then benchmarks
 pnpm test:coverage # tests with a coverage report
+pnpm docs:build # write the docs site from this README
+pnpm report # measure speed and size, then update this README and the docs
 ```
 
 Read [AGENTS.md](AGENTS.md) for the project's rules. Commits follow

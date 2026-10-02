@@ -1,4 +1,8 @@
 <!doctype html>
+<!--
+  Generated from README.md by `pnpm docs:build`. Edit README.md, or this
+  page's template in scripts/docs/page.html, instead.
+-->
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -114,6 +118,9 @@
           <ul aria-labelledby="nav-get-started">
             <li><a class="nav-link" href="#overview">Overview</a></li>
             <li><a class="nav-link" href="#installation">Installation</a></li>
+            <li>
+              <a class="nav-link" href="#why-class-recipe">Why class-recipe</a>
+            </li>
           </ul>
         </div>
         <div class="nav-group">
@@ -134,20 +141,32 @@
           <p class="eyebrow" id="nav-guides">Guides</p>
           <ul aria-labelledby="nav-guides">
             <li>
-              <a class="nav-link" href="#conflict-free-recipes"
+              <a class="nav-link" href="#writing-conflict-free-recipes"
                 >Conflict-free recipes</a
               >
             </li>
             <li>
-              <a class="nav-link" href="#tailwind-merge">tailwind-merge</a>
+              <a
+                class="nav-link"
+                href="#resolving-conflicts-with-tailwind-merge"
+                >tailwind-merge</a
+              >
             </li>
             <li><a class="nav-link" href="#typescript">TypeScript</a></li>
+            <li>
+              <a
+                class="nav-link"
+                href="#migrating-from-class-variance-authority"
+                >Migrating from cva</a
+              >
+            </li>
           </ul>
         </div>
         <div class="nav-group">
           <p class="eyebrow" id="nav-reference">Reference</p>
           <ul aria-labelledby="nav-reference">
             <li><a class="nav-link" href="#performance">Performance</a></li>
+            <li><a class="nav-link" href="#size">Size</a></li>
             <li><a class="nav-link" href="#api">Exports</a></li>
             <li><a class="nav-link" href="#contributing">Contributing</a></li>
           </ul>
@@ -179,47 +198,48 @@
                 >View on GitHub</a
               >
             </div>
-
             <div class="code">
               <div class="code-head"><span class="eyebrow">ts</span></div>
               <pre
                 tabindex="0"
-              ><code data-lang="ts">import { cva } from "@lynstack/class-recipe";
+              ><code data-lang="ts">import { cva } from &quot;@lynstack/class-recipe&quot;;
 
 const button = cva({
-  base: "inline-flex items-center rounded-md font-medium",
+  base: &quot;inline-flex items-center rounded-md font-medium&quot;,
   variants: {
     tone: {
-      neutral: "bg-gray-100 text-gray-900",
-      danger: "bg-red-600 text-white",
+      neutral: &quot;bg-gray-100 text-gray-900&quot;,
+      danger: &quot;bg-red-600 text-white&quot;,
     },
     size: {
-      sm: "h-8 px-3 text-sm",
-      md: "h-10 px-4",
+      sm: &quot;h-8 px-3 text-sm&quot;,
+      md: &quot;h-10 px-4&quot;,
     },
   },
-  defaultVariants: { size: "md" },
+  defaultVariants: { size: &quot;md&quot; },
 });
 
-button({ tone: "danger" });
-<span class="comment">// => "inline-flex items-center rounded-md font-medium bg-red-600 text-white h-10 px-4"</span></code></pre>
+button({ tone: &quot;danger&quot; });
+// =&gt; &quot;inline-flex items-center rounded-md font-medium bg-red-600 text-white h-10 px-4&quot;</code></pre>
             </div>
-
             <dl class="rows">
+              <div>
+                <dt class="eyebrow">Fast</dt>
+                <dd>
+                  A recipe compiles its config once and caches the class name of
+                  each selection, so most calls are a lookup. It runs about 9
+                  times as many calls per second as
+                  <code>class-variance-authority</code> (see
+                  <a href="#performance">Performance</a>).
+                </dd>
+              </div>
               <div>
                 <dt class="eyebrow">Type-safe</dt>
                 <dd>
                   Variant names, options, and slots are inferred from the
                   config. An unknown option or slot is a type error, and a
-                  variant without a default is required.
-                </dd>
-              </div>
-              <div>
-                <dt class="eyebrow">Fast</dt>
-                <dd>
-                  A recipe compiles its config once and caches the class name of
-                  each selection, so most calls are a lookup (see
-                  <a href="#performance">Performance</a>).
+                  variant without a default is required, so a component cannot
+                  forget to choose it.
                 </dd>
               </div>
               <div>
@@ -232,7 +252,11 @@ button({ tone: "danger" });
               </div>
               <div>
                 <dt class="eyebrow">Small</dt>
-                <dd>No dependencies, ES modules only, and tree-shakable.</dd>
+                <dd>
+                  1.8 kB minified and gzipped for the whole package, 0.2 kB for
+                  <code>cx</code> alone. No dependencies, ES modules only, and
+                  tree-shakable (see <a href="#size">Size</a>).
+                </dd>
               </div>
             </dl>
           </section>
@@ -250,38 +274,32 @@ button({ tone: "danger" });
             </div>
             <div class="code" data-tabs>
               <div class="code-head">
-                <div
-                  class="code-tabs"
-                  role="tablist"
-                  aria-label="Package manager"
-                >
+                <div class="code-tabs" role="tablist" aria-label="Installation">
                   <button
                     class="code-tab eyebrow"
                     type="button"
                     role="tab"
-                    id="tab-npm"
-                    aria-controls="panel-npm"
+                    id="tab-installation-npm"
+                    aria-controls="panel-installation-npm"
                     aria-selected="true"
                   >
-                    npm
-                  </button>
-                  <button
+                    npm</button
+                  ><button
                     class="code-tab eyebrow"
                     type="button"
                     role="tab"
-                    id="tab-pnpm"
-                    aria-controls="panel-pnpm"
+                    id="tab-installation-pnpm"
+                    aria-controls="panel-installation-pnpm"
                     aria-selected="false"
                     tabindex="-1"
                   >
-                    pnpm
-                  </button>
-                  <button
+                    pnpm</button
+                  ><button
                     class="code-tab eyebrow"
                     type="button"
                     role="tab"
-                    id="tab-yarn"
-                    aria-controls="panel-yarn"
+                    id="tab-installation-yarn"
+                    aria-controls="panel-installation-yarn"
                     aria-selected="false"
                     tabindex="-1"
                   >
@@ -291,28 +309,122 @@ button({ tone: "danger" });
               </div>
               <pre
                 tabindex="0"
-                id="panel-npm"
+                id="panel-installation-npm"
                 role="tabpanel"
-                aria-labelledby="tab-npm"
+                aria-labelledby="tab-installation-npm"
               ><code data-lang="sh">npm install @lynstack/class-recipe</code></pre>
               <pre
                 tabindex="0"
-                id="panel-pnpm"
+                id="panel-installation-pnpm"
                 role="tabpanel"
-                aria-labelledby="tab-pnpm"
+                aria-labelledby="tab-installation-pnpm"
                 hidden
               ><code data-lang="sh">pnpm add @lynstack/class-recipe</code></pre>
               <pre
                 tabindex="0"
-                id="panel-yarn"
+                id="panel-installation-yarn"
                 role="tabpanel"
-                aria-labelledby="tab-yarn"
+                aria-labelledby="tab-installation-yarn"
                 hidden
               ><code data-lang="sh">yarn add @lynstack/class-recipe</code></pre>
             </div>
             <p>
               The package is ESM only and targets ES2022. Its types require
               TypeScript 5.4 or newer.
+            </p>
+          </section>
+
+          <section id="why-class-recipe">
+            <p class="eyebrow section-eyebrow">Get started</p>
+            <div class="heading">
+              <h2>Why class-recipe</h2>
+              <a
+                class="heading-anchor"
+                href="#why-class-recipe"
+                aria-label="Permalink to Why class-recipe"
+                >#</a
+              >
+            </div>
+            <p>
+              class-recipe solves the same problem as
+              <a href="https://cva.style">class-variance-authority</a> and
+              <a href="https://www.tailwind-variants.org">tailwind-variants</a>:
+              turning component props into class names. It differs from them in
+              these ways:
+            </p>
+
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="Why class-recipe"
+            >
+              <table>
+                <caption class="visually-hidden">
+                  Why class-recipe
+                </caption>
+                <thead>
+                  <tr>
+                    <th class="eyebrow" scope="col">
+                      <span class="visually-hidden">Row</span>
+                    </th>
+                    <th class="eyebrow" scope="col">
+                      class-recipe <code>1.0.0</code>
+                    </th>
+                    <th class="eyebrow" scope="col">
+                      class-variance-authority <code>0.7.1</code>
+                    </th>
+                    <th class="eyebrow" scope="col">
+                      tailwind-variants <code>3.3.1</code>, lite
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Slots</th>
+                    <td>Yes</td>
+                    <td>No</td>
+                    <td>Yes</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Variant without a default</th>
+                    <td>Required by its type</td>
+                    <td>Optional</td>
+                    <td>Optional</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Conflict resolution</th>
+                    <td>Any join function, cached</td>
+                    <td>Call <code>twMerge</code> on the result</td>
+                    <td><code>tailwind-merge</code>, built in</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Recipe calls per second</th>
+                    <td>2.2 million</td>
+                    <td>240,000</td>
+                    <td>170,000</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Size, minified and gzipped</th>
+                    <td>1.8 kB</td>
+                    <td>0.5 kB</td>
+                    <td>3.6 kB</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              The calls per second come from the
+              <a href="#compared-with-other-libraries">benchmarks</a>, and the
+              sizes from <a href="#size">Size</a>.
+            </p>
+
+            <p>
+              Choose class-variance-authority if bundle size matters more to you
+              than call speed and you need no slots. Choose tailwind-variants if
+              you need to compose recipes with <code>extend</code> or apply
+              classes to several slots at once with <code>compoundSlots</code>;
+              class-recipe has neither.
             </p>
           </section>
 
@@ -330,17 +442,18 @@ button({ tone: "danger" });
               objects, and nested arrays) and returns the same output, so you
               can replace <code>clsx</code> with it.
             </p>
+
             <div class="code">
               <div class="code-head"><span class="eyebrow">ts</span></div>
               <pre
                 tabindex="0"
-              ><code data-lang="ts">import { cx } from "@lynstack/class-recipe";
+              ><code data-lang="ts">import { cx } from &quot;@lynstack/class-recipe&quot;;
 
-cx("btn", isActive &amp;&amp; "btn-active", { "btn-disabled": isDisabled });
-<span class="comment">// => "btn btn-active" when isActive is true and isDisabled is false</span>
+cx(&quot;btn&quot;, isActive &amp;&amp; &quot;btn-active&quot;, { &quot;btn-disabled&quot;: isDisabled });
+// =&gt; &quot;btn btn-active&quot; when isActive is true and isDisabled is false
 
-cx(["flex", ["items-center", null]], { hidden: false }, 0, "");
-<span class="comment">// => "flex items-center"</span></code></pre>
+cx([&quot;flex&quot;, [&quot;items-center&quot;, null]], { hidden: false }, 0, &quot;&quot;);
+// =&gt; &quot;flex items-center&quot;</code></pre>
             </div>
           </section>
 
@@ -358,45 +471,42 @@ cx(["flex", ["items-center", null]], { hidden: false }, 0, "");
             <p>
               <code>cva</code> creates a recipe, which returns the class name of
               one element for a selection of variants. It is also exported as
-              <code>createRecipe</code>. It takes one config object, unlike the
-              <code>cva</code> of <code>class-variance-authority</code>, which
-              takes the base classes as a separate argument.
+              <code>createRecipe</code>.
             </p>
+
             <div class="code">
               <div class="code-head"><span class="eyebrow">ts</span></div>
               <pre
                 tabindex="0"
-              ><code data-lang="ts">import { cva } from "@lynstack/class-recipe";
+              ><code data-lang="ts">import { cva } from &quot;@lynstack/class-recipe&quot;;
 
 const badge = cva({
-  <span class="comment">// Applied whatever the variants.</span>
-  base: "inline-flex rounded-full px-2 text-xs",
-  <span class="comment">// For each variant, the classes of each option.</span>
+  // Applied whatever the variants.
+  base: &quot;inline-flex rounded-full px-2 text-xs&quot;,
+  // For each variant, the classes of each option.
   variants: {
     tone: {
-      neutral: "bg-gray-100 text-gray-700",
-      success: "bg-green-100 text-green-800",
-      danger: "bg-red-100 text-red-800",
+      neutral: &quot;bg-gray-100 text-gray-700&quot;,
+      success: &quot;bg-green-100 text-green-800&quot;,
+      danger: &quot;bg-red-100 text-red-800&quot;,
     },
     outlined: {
-      true: "ring-1 ring-inset ring-current",
+      true: &quot;ring-1 ring-inset ring-current&quot;,
     },
   },
-  <span class="comment">// Classes added when several variants match at the same time.</span>
-  compoundVariants: [
-    {
-      variants: { tone: ["success", "danger"], outlined: true },
-      className: "font-semibold",
-    },
-  ],
 });
 
-badge({ tone: "success" });
-<span class="comment">// => "inline-flex rounded-full px-2 text-xs bg-green-100 text-green-800"</span>
+badge({ tone: &quot;success&quot; });
+// =&gt; &quot;inline-flex rounded-full px-2 text-xs bg-green-100 text-green-800&quot;
 
-badge({ tone: "danger", outlined: true, className: "uppercase" });
-<span class="comment">// => "inline-flex rounded-full px-2 text-xs bg-red-100 text-red-800 ring-1 ring-inset ring-current font-semibold uppercase"</span></code></pre>
+badge({ tone: &quot;danger&quot;, outlined: true, className: &quot;uppercase&quot; });
+// =&gt; &quot;inline-flex rounded-full px-2 text-xs bg-red-100 text-red-800 ring-1 ring-inset ring-current uppercase&quot;</code></pre>
             </div>
+            <p>
+              Classes are added in this order: <code>base</code>, then each
+              variant in the order the config declares it, then the matching
+              compound variants, then <code>className</code>.
+            </p>
 
             <div class="heading">
               <h3 id="default-and-required-variants">
@@ -416,21 +526,21 @@ badge({ tone: "danger", outlined: true, className: "uppercase" });
               tone. When every variant has a default, the argument itself is
               optional.
             </p>
+
             <div class="code">
               <div class="code-head"><span class="eyebrow">ts</span></div>
               <pre tabindex="0"><code data-lang="ts">const stack = cva({
   variants: {
-    gap: { sm: "gap-2", md: "gap-4" },
-    direction: { row: "flex-row", column: "flex-col" },
+    gap: { sm: &quot;gap-2&quot;, md: &quot;gap-4&quot; },
+    direction: { row: &quot;flex-row&quot;, column: &quot;flex-col&quot; },
   },
-  defaultVariants: { gap: "md", direction: "column" },
+  defaultVariants: { gap: &quot;md&quot;, direction: &quot;column&quot; },
 });
 
-stack(); <span class="comment">// => "gap-4 flex-col"</span>
-stack({ direction: "row" }); <span class="comment">// => "gap-4 flex-row"</span>
-stack({ gap: undefined }); <span class="comment">// => "gap-4 flex-col"</span></code></pre>
+stack(); // =&gt; &quot;gap-4 flex-col&quot;
+stack({ direction: &quot;row&quot; }); // =&gt; &quot;gap-4 flex-row&quot;
+stack({ gap: undefined }); // =&gt; &quot;gap-4 flex-col&quot;</code></pre>
             </div>
-
             <div class="heading">
               <h3 id="boolean-variants">Boolean variants</h3>
               <a
@@ -441,28 +551,29 @@ stack({ gap: undefined }); <span class="comment">// => "gap-4 flex-col"</span></
               >
             </div>
             <p>
-              A variant with an option named <code>"true"</code> or
-              <code>"false"</code> also accepts the booleans
+              A variant with an option named <code>&quot;true&quot;</code> or
+              <code>&quot;false&quot;</code> also accepts the booleans
               <code>true</code> and <code>false</code>, and declares the missing
               one of those two options without classes. A variant whose only
-              options are <code>"true"</code> and <code>"false"</code> is
-              optional and defaults to <code>false</code>.
+              options are <code>&quot;true&quot;</code> and
+              <code>&quot;false&quot;</code> is optional and defaults to
+              <code>false</code>.
             </p>
+
             <div class="code">
               <div class="code-head"><span class="eyebrow">ts</span></div>
               <pre tabindex="0"><code data-lang="ts">const input = cva({
-  base: "rounded-md border",
+  base: &quot;rounded-md border&quot;,
   variants: {
-    invalid: { true: "border-red-600", false: "border-gray-300" },
-    disabled: { true: "opacity-50" },
+    invalid: { true: &quot;border-red-600&quot;, false: &quot;border-gray-300&quot; },
+    disabled: { true: &quot;opacity-50&quot; },
   },
 });
 
-input(); <span class="comment">// => "rounded-md border border-gray-300"</span>
+input(); // =&gt; &quot;rounded-md border border-gray-300&quot;
 input({ invalid: true, disabled: true });
-<span class="comment">// => "rounded-md border border-red-600 opacity-50"</span></code></pre>
+// =&gt; &quot;rounded-md border border-red-600 opacity-50&quot;</code></pre>
             </div>
-
             <div class="heading">
               <h3 id="compound-variants">Compound variants</h3>
               <a
@@ -473,14 +584,45 @@ input({ invalid: true, disabled: true });
               >
             </div>
             <p>
-              Each compound variant names, for some variants, the option or the
-              list of options it matches, and adds its
-              <code>className</code> when all of them match. A variant it leaves
-              out matches any option. Conditions are checked against the
-              selection after defaults are applied, and matching compound
-              variants are added in order, after the classes of the variants. A
-              compound variant that names an undeclared variant, or lists no
-              declared option for one, never matches.
+              A compound variant adds its <code>className</code> when several
+              variants have particular options at the same time. For each
+              variant it names, it gives one option or a list of options; a
+              variant it leaves out matches any option.
+            </p>
+
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">ts</span></div>
+              <pre tabindex="0"><code data-lang="ts">const button = cva({
+  base: &quot;inline-flex rounded-md&quot;,
+  variants: {
+    tone: { neutral: &quot;bg-gray-100&quot;, danger: &quot;bg-red-600 text-white&quot; },
+    size: { sm: &quot;h-8 px-3&quot;, md: &quot;h-10 px-4&quot; },
+    outlined: { true: &quot;ring-1 ring-inset&quot; },
+  },
+  compoundVariants: [
+    // When tone is danger and size is md.
+    { variants: { tone: &quot;danger&quot;, size: &quot;md&quot; }, className: &quot;font-semibold&quot; },
+    // When tone is neutral and outlined is true, whatever the size.
+    {
+      variants: { tone: &quot;neutral&quot;, outlined: true },
+      className: &quot;ring-gray-300&quot;,
+    },
+  ],
+  defaultVariants: { size: &quot;md&quot; },
+});
+
+button({ tone: &quot;danger&quot; });
+// =&gt; &quot;inline-flex rounded-md bg-red-600 text-white h-10 px-4 font-semibold&quot;
+
+button({ tone: &quot;neutral&quot;, size: &quot;sm&quot;, outlined: true });
+// =&gt; &quot;inline-flex rounded-md bg-gray-100 h-8 px-3 ring-1 ring-inset ring-gray-300&quot;</code></pre>
+            </div>
+            <p>
+              Conditions are checked after defaults are applied, which is why
+              the first call matches <code>size: &quot;md&quot;</code> without
+              passing it. Matching compound variants are added in the order they
+              are declared. A compound variant that names an undeclared variant,
+              or lists no declared option for one, never matches.
             </p>
 
             <div class="heading">
@@ -498,11 +640,28 @@ input({ invalid: true, disabled: true });
               sets the same CSS property as a class of the recipe leaves both in
               the class name. Design the recipe so that it needs no override
               (see
-              <a href="#conflict-free-recipes">Writing conflict-free recipes</a
+              <a href="#writing-conflict-free-recipes"
+                >Writing conflict-free recipes</a
               >), or use a join function such as <code>twMerge</code> (see
-              <a href="#tailwind-merge"
+              <a href="#resolving-conflicts-with-tailwind-merge"
                 >Resolving conflicts with tailwind-merge</a
               >) to let these classes replace conflicting ones.
+            </p>
+
+            <div class="heading">
+              <h3 id="undeclared-options">Undeclared options</h3>
+              <a
+                class="heading-anchor"
+                href="#undeclared-options"
+                aria-label="Permalink to Undeclared options"
+                >#</a
+              >
+            </div>
+            <p>
+              The types accept only the options the config declares. A value
+              from untyped data can still bypass them; an option the config does
+              not declare adds no classes for its variant, and its class name is
+              built on every call instead of being cached.
             </p>
           </section>
 
@@ -523,59 +682,71 @@ input({ invalid: true, disabled: true });
               the class name of every slot. It is also exported as
               <code>createSlotRecipe</code>.
             </p>
+
             <div class="code">
               <div class="code-head"><span class="eyebrow">ts</span></div>
               <pre
                 tabindex="0"
-              ><code data-lang="ts">import { sva } from "@lynstack/class-recipe";
+              ><code data-lang="ts">import { sva } from &quot;@lynstack/class-recipe&quot;;
 
 const card = sva({
-  slots: ["root", "header", "body"],
+  slots: [&quot;root&quot;, &quot;header&quot;, &quot;body&quot;],
   base: {
-    root: "rounded-lg border",
-    header: "font-semibold",
-    body: "text-gray-600",
+    root: &quot;rounded-lg border&quot;,
+    header: &quot;font-semibold&quot;,
+    body: &quot;text-gray-600&quot;,
   },
   variants: {
     size: {
-      sm: { root: "p-3", header: "text-sm" },
-      md: { root: "p-5", header: "text-base" },
+      sm: { root: &quot;p-3&quot;, header: &quot;text-sm&quot; },
+      md: { root: &quot;p-5&quot;, header: &quot;text-base&quot; },
     },
     elevated: {
-      true: { root: "shadow-md" },
+      true: { root: &quot;shadow-md&quot; },
     },
   },
   compoundVariants: [
     {
-      variants: { size: "md", elevated: true },
-      classNames: { root: "shadow-lg" },
+      variants: { size: &quot;md&quot;, elevated: true },
+      classNames: { header: &quot;border-b&quot; },
     },
   ],
-  defaultVariants: { size: "md" },
+  defaultVariants: { size: &quot;md&quot; },
 });
 
-const classNames = card({ classNames: { body: "italic" } });
-classNames.root; <span class="comment">// => "rounded-lg border p-5"</span>
-classNames.header; <span class="comment">// => "font-semibold text-base"</span>
-classNames.body; <span class="comment">// => "text-gray-600 italic"</span></code></pre>
+const elevated = card({ elevated: true });
+elevated.root; // =&gt; &quot;rounded-lg border p-5 shadow-md&quot;
+elevated.header; // =&gt; &quot;font-semibold text-base border-b&quot;
+elevated.body; // =&gt; &quot;text-gray-600&quot;
+
+const small = card({ size: &quot;sm&quot;, classNames: { body: &quot;italic&quot; } });
+small.root; // =&gt; &quot;rounded-lg border p-3&quot;
+small.header; // =&gt; &quot;font-semibold text-sm&quot;
+small.body; // =&gt; &quot;text-gray-600 italic&quot;</code></pre>
             </div>
             <p>
-              Every slot is present in the result, as <code>""</code> when it
-              has no classes. The result is frozen, and calling the recipe again
-              with the same variants returns the same object, which keeps props
-              stable for memoized components. Passing
-              <code>classNames</code> with at least one class returns a new
-              object.
+              A slot recipe follows the same rules as a recipe, with an object
+              of classes per slot wherever a recipe takes a string, and
+              <code>classNames</code> instead of <code>className</code>.
+            </p>
+
+            <p>
+              Every slot is present in the result, as
+              <code>&quot;&quot;</code> when it has no classes. The result is
+              frozen, and calling the recipe again with the same variants
+              returns the same object, which keeps props stable for memoized
+              components. Passing <code>classNames</code> with at least one
+              class returns a new object.
             </p>
           </section>
 
-          <section id="conflict-free-recipes">
+          <section id="writing-conflict-free-recipes">
             <p class="eyebrow section-eyebrow">Guides</p>
             <div class="heading">
               <h2>Writing conflict-free recipes</h2>
               <a
                 class="heading-anchor"
-                href="#conflict-free-recipes"
+                href="#writing-conflict-free-recipes"
                 aria-label="Permalink to Writing conflict-free recipes"
                 >#</a
               >
@@ -588,6 +759,7 @@ classNames.body; <span class="comment">// => "text-gray-600 italic"</span></code
               recipe avoids this by construction when it sets each CSS property
               of an element in one place:
             </p>
+
             <ul>
               <li>
                 <strong
@@ -619,74 +791,51 @@ classNames.body; <span class="comment">// => "text-gray-600 italic"</span></code
                 variants add classes after the variants; they never remove one.
               </li>
             </ul>
+
             <div class="code">
               <div class="code-head"><span class="eyebrow">ts</span></div>
               <pre
                 tabindex="0"
-              ><code data-lang="ts"><span class="comment">// Conflicting: base and the variant both set the border color.</span>
+              ><code data-lang="ts">// Conflicting: base and the variant both set the border color.
 const conflicting = cva({
-  base: "rounded-md border border-gray-300",
-  variants: { invalid: { true: "border-red-600" } },
+  base: &quot;rounded-md border border-gray-300&quot;,
+  variants: { invalid: { true: &quot;border-red-600&quot; } },
 });
 
 conflicting({ invalid: true });
-<span class="comment">// => "rounded-md border border-gray-300 border-red-600"</span>
+// =&gt; &quot;rounded-md border border-gray-300 border-red-600&quot;
 
-<span class="comment">// Conflict-free: only the variant sets it.</span>
+// Conflict-free: only the variant sets it.
 const input = cva({
-  base: "rounded-md border",
+  base: &quot;rounded-md border&quot;,
   variants: {
-    invalid: { true: "border-red-600", false: "border-gray-300" },
+    invalid: { true: &quot;border-red-600&quot;, false: &quot;border-gray-300&quot; },
   },
 });
 
-input({ invalid: true }); <span class="comment">// => "rounded-md border border-red-600"</span></code></pre>
+input({ invalid: true }); // =&gt; &quot;rounded-md border border-red-600&quot;</code></pre>
             </div>
             <p>
               These rules, with more examples, are available as an agent skill.
               Install it in your project with the
-              <a href="https://skills.sh">skills</a> CLI, or give your coding
-              agent the prompt to use it in the current session without
-              installing it:
+              <a href="https://skills.sh">skills</a> CLI:
             </p>
-            <div class="code" data-tabs>
-              <div class="code-head">
-                <div class="code-tabs" role="tablist" aria-label="Skill setup">
-                  <button
-                    class="code-tab eyebrow"
-                    type="button"
-                    role="tab"
-                    id="tab-skill-command"
-                    aria-controls="panel-skill-command"
-                    aria-selected="true"
-                  >
-                    Command
-                  </button>
-                  <button
-                    class="code-tab eyebrow"
-                    type="button"
-                    role="tab"
-                    id="tab-skill-prompt"
-                    aria-controls="panel-skill-prompt"
-                    aria-selected="false"
-                    tabindex="-1"
-                  >
-                    Prompt
-                  </button>
-                </div>
-              </div>
+
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">sh</span></div>
               <pre
                 tabindex="0"
-                id="panel-skill-command"
-                role="tabpanel"
-                aria-labelledby="tab-skill-command"
               ><code data-lang="sh">npx skills add lynstack/class-recipe</code></pre>
+            </div>
+            <p>
+              Or give your coding agent this prompt to use it in the current
+              session without installing it:
+            </p>
+
+            <div class="code">
+              <div class="code-head"><span class="eyebrow">text</span></div>
               <pre
                 tabindex="0"
-                id="panel-skill-prompt"
-                role="tabpanel"
-                aria-labelledby="tab-skill-prompt"
-                hidden
               ><code data-lang="text">Run `npx skills use lynstack/class-recipe` and follow the generated skill instructions now. Read its complete output, redirecting it to a temporary file first if necessary.</code></pre>
             </div>
             <p>
@@ -695,17 +844,17 @@ input({ invalid: true }); <span class="comment">// => "rounded-md border border-
               <code
                 >node_modules/@lynstack/class-recipe/skills/class-recipe/SKILL.md</code
               >, or copy the <code>skills/class-recipe</code> folder into your
-              agent's skills folder, such as <code>.claude/skills</code>.
+              agent&#39;s skills folder, such as <code>.claude/skills</code>.
             </p>
           </section>
 
-          <section id="tailwind-merge">
+          <section id="resolving-conflicts-with-tailwind-merge">
             <p class="eyebrow section-eyebrow">Guides</p>
             <div class="heading">
               <h2>Resolving conflicts with tailwind-merge</h2>
               <a
                 class="heading-anchor"
-                href="#tailwind-merge"
+                href="#resolving-conflicts-with-tailwind-merge"
                 aria-label="Permalink to Resolving conflicts with tailwind-merge"
                 >#</a
               >
@@ -716,13 +865,12 @@ input({ invalid: true }); <span class="comment">// => "rounded-md border border-
               with a join function of your choice, once, in a module of your
               own:
             </p>
+
             <div class="code">
               <div class="code-head"><span class="eyebrow">ts</span></div>
-              <pre
-                tabindex="0"
-              ><code data-lang="ts"><span class="comment">// src/lib/recipe.ts</span>
-import { createRecipes } from "@lynstack/class-recipe";
-import { twMerge } from "tailwind-merge";
+              <pre tabindex="0"><code data-lang="ts">// src/lib/recipe.ts
+import { createRecipes } from &quot;@lynstack/class-recipe&quot;;
+import { twMerge } from &quot;tailwind-merge&quot;;
 
 export const { cx, cva, sva } = createRecipes({ join: twMerge });</code></pre>
             </div>
@@ -730,15 +878,15 @@ export const { cx, cva, sva } = createRecipes({ join: twMerge });</code></pre>
               <div class="code-head"><span class="eyebrow">ts</span></div>
               <pre
                 tabindex="0"
-              ><code data-lang="ts">import { cva, cx } from "./lib/recipe";
+              ><code data-lang="ts">import { cva, cx } from &quot;./lib/recipe&quot;;
 
 const button = cva({
-  base: "rounded-md px-4 py-2",
-  variants: { size: { sm: "px-2 py-1", md: "" } },
+  base: &quot;rounded-md px-4 py-2&quot;,
+  variants: { size: { sm: &quot;px-2 py-1&quot;, md: &quot;&quot; } },
 });
 
-button({ size: "sm", className: "px-3" }); <span class="comment">// => "rounded-md py-1 px-3"</span>
-cx("p-2", isLarge &amp;&amp; "p-4"); <span class="comment">// => "p-4" when isLarge is true</span></code></pre>
+button({ size: &quot;sm&quot;, className: &quot;px-3&quot; }); // =&gt; &quot;rounded-md py-1 px-3&quot;
+cx(&quot;p-2&quot;, isLarge &amp;&amp; &quot;p-4&quot;); // =&gt; &quot;p-4&quot; when isLarge is true</code></pre>
             </div>
             <p>
               A join function receives the class strings in order of precedence,
@@ -771,6 +919,7 @@ cx("p-2", isLarge &amp;&amp; "p-4"); <span class="comment">// => "p-4" when isLa
               <code>cache: false</code> to build them on every call instead,
               alone or together with <code>join</code>:
             </p>
+
             <div class="code">
               <div class="code-head"><span class="eyebrow">ts</span></div>
               <pre
@@ -796,27 +945,28 @@ cx("p-2", isLarge &amp;&amp; "p-4"); <span class="comment">// => "p-4" when isLa
             </div>
             <p>
               Use <code>VariantsOf</code> to type the props of a component from
-              its recipe.
+              its recipe or slot recipe.
             </p>
+
             <div class="code">
               <div class="code-head"><span class="eyebrow">tsx</span></div>
               <pre
                 tabindex="0"
-              ><code data-lang="tsx">import { cva, type VariantsOf } from "@lynstack/class-recipe";
-import type { ComponentProps } from "react";
+              ><code data-lang="tsx">import { cva, type VariantsOf } from &quot;@lynstack/class-recipe&quot;;
+import type { ComponentProps } from &quot;react&quot;;
 
 const button = cva({
-  base: "inline-flex rounded-md",
+  base: &quot;inline-flex rounded-md&quot;,
   variants: {
-    tone: { neutral: "bg-gray-100", danger: "bg-red-600 text-white" },
-    size: { sm: "h-8 px-3", md: "h-10 px-4" },
+    tone: { neutral: &quot;bg-gray-100&quot;, danger: &quot;bg-red-600 text-white&quot; },
+    size: { sm: &quot;h-8 px-3&quot;, md: &quot;h-10 px-4&quot; },
   },
-  defaultVariants: { size: "md" },
+  defaultVariants: { size: &quot;md&quot; },
 });
 
-type ButtonProps = ComponentProps&lt;"button"&gt; &amp; VariantsOf&lt;typeof button&gt;;
-<span class="comment">// VariantsOf&lt;typeof button&gt; is</span>
-<span class="comment">// { readonly tone: "neutral" | "danger"; readonly size?: "sm" | "md" | undefined }</span>
+type ButtonProps = ComponentProps&lt;&quot;button&quot;&gt; &amp; VariantsOf&lt;typeof button&gt;;
+// VariantsOf&lt;typeof button&gt; is
+// { readonly tone: &quot;neutral&quot; | &quot;danger&quot;; readonly size?: &quot;sm&quot; | &quot;md&quot; | undefined }
 
 export function Button({ tone, size, className, ...props }: ButtonProps) {
   return &lt;button className={button({ tone, size, className })} {...props} /&gt;;
@@ -824,8 +974,175 @@ export function Button({ tone, size, className, ...props }: ButtonProps) {
             </div>
             <p>
               The names <code>className</code> and <code>classNames</code> are
-              reserved and cannot be used as variant names.
+              reserved and cannot be used as variant names. The package also
+              exports the types of every config, props object, and recipe, such
+              as <code>RecipeConfig</code> and <code>SlotRecipeProps</code>, for
+              code that builds on them.
             </p>
+          </section>
+
+          <section id="migrating-from-class-variance-authority">
+            <p class="eyebrow section-eyebrow">Guides</p>
+            <div class="heading">
+              <h2>Migrating from class-variance-authority</h2>
+              <a
+                class="heading-anchor"
+                href="#migrating-from-class-variance-authority"
+                aria-label="Permalink to Migrating from class-variance-authority"
+                >#</a
+              >
+            </div>
+            <p>
+              The concepts are the same, so most recipes move over with a few
+              mechanical changes:
+            </p>
+
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="Migrating from class-variance-authority"
+            >
+              <table>
+                <caption class="visually-hidden">
+                  Migrating from class-variance-authority
+                </caption>
+                <thead>
+                  <tr>
+                    <th class="eyebrow" scope="col">
+                      class-variance-authority
+                    </th>
+                    <th class="eyebrow" scope="col">class-recipe</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><code>cva(base, config)</code></th>
+                    <td><code>cva({ base, ...config })</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Arrays of classes</th>
+                    <td>
+                      One string of classes for <code>base</code> and for each
+                      option
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                      <code
+                        >{ intent: &quot;primary&quot;, class: &quot;...&quot;
+                        }</code
+                      >
+                    </th>
+                    <td>
+                      <code
+                        >{ variants: { intent: &quot;primary&quot; }, className:
+                        &quot;...&quot; }</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                      <code>class</code> or <code>className</code> prop
+                    </th>
+                    <td><code>className</code> prop</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                      <code>VariantProps&lt;typeof button&gt;</code>
+                    </th>
+                    <td><code>VariantsOf&lt;typeof button&gt;</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>twMerge(button(props))</code></th>
+                    <td><code>createRecipes({ join: twMerge })</code>, once</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>cx</code> (<code>clsx</code>)</th>
+                    <td><code>cx</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="code" data-tabs>
+              <div class="code-head">
+                <div
+                  class="code-tabs"
+                  role="tablist"
+                  aria-label="Migrating from class-variance-authority"
+                >
+                  <button
+                    class="code-tab eyebrow"
+                    type="button"
+                    role="tab"
+                    id="tab-migrating-from-class-variance-authority-before"
+                    aria-controls="panel-migrating-from-class-variance-authority-before"
+                    aria-selected="true"
+                  >
+                    Before</button
+                  ><button
+                    class="code-tab eyebrow"
+                    type="button"
+                    role="tab"
+                    id="tab-migrating-from-class-variance-authority-after"
+                    aria-controls="panel-migrating-from-class-variance-authority-after"
+                    aria-selected="false"
+                    tabindex="-1"
+                  >
+                    After
+                  </button>
+                </div>
+              </div>
+              <pre
+                tabindex="0"
+                id="panel-migrating-from-class-variance-authority-before"
+                role="tabpanel"
+                aria-labelledby="tab-migrating-from-class-variance-authority-before"
+              ><code data-lang="ts">// class-variance-authority
+const button = cva(&quot;rounded-md font-medium&quot;, {
+  variants: {
+    intent: { primary: &quot;bg-blue-600 text-white&quot;, secondary: &quot;bg-gray-100&quot; },
+    size: { sm: &quot;h-8 px-3&quot;, md: &quot;h-10 px-4&quot; },
+  },
+  compoundVariants: [{ intent: &quot;primary&quot;, size: &quot;md&quot;, class: &quot;shadow-sm&quot; }],
+  defaultVariants: { intent: &quot;primary&quot;, size: &quot;md&quot; },
+});</code></pre>
+              <pre
+                tabindex="0"
+                id="panel-migrating-from-class-variance-authority-after"
+                role="tabpanel"
+                aria-labelledby="tab-migrating-from-class-variance-authority-after"
+                hidden
+              ><code data-lang="ts">// class-recipe
+const button = cva({
+  base: &quot;rounded-md font-medium&quot;,
+  variants: {
+    intent: { primary: &quot;bg-blue-600 text-white&quot;, secondary: &quot;bg-gray-100&quot; },
+    size: { sm: &quot;h-8 px-3&quot;, md: &quot;h-10 px-4&quot; },
+  },
+  compoundVariants: [
+    { variants: { intent: &quot;primary&quot;, size: &quot;md&quot; }, className: &quot;shadow-sm&quot; },
+  ],
+  defaultVariants: { intent: &quot;primary&quot;, size: &quot;md&quot; },
+});</code></pre>
+            </div>
+            <p>Two behaviors change:</p>
+
+            <ul>
+              <li>
+                <strong>A variant without a default becomes required.</strong>
+                Every call that omits it is a type error. Add a default to keep
+                it optional.
+              </li>
+              <li>
+                <strong
+                  >A boolean variant without a default uses its
+                  <code>false</code> option.</strong
+                >
+                class-variance-authority adds no classes for it when the prop is
+                omitted.
+              </li>
+            </ul>
           </section>
 
           <section id="performance">
@@ -839,51 +1156,77 @@ export function Button({ tone, size, className, ...props }: ButtonProps) {
                 >#</a
               >
             </div>
+            <aside class="measurement" aria-label="Measurement">
+              <p class="eyebrow">Measured on</p>
+              <p class="measurement-date">
+                <time datetime="2026-10-02">October 2, 2026</time>
+              </p>
+              <p class="measurement-details">
+                On an Apple M1 Pro with Node.js 24.21.0, against:
+              </p>
+              <ul class="measurement-versions">
+                <li>class-recipe <code>1.0.0</code></li>
+                <li>class-variance-authority <code>0.7.1</code></li>
+                <li>tailwind-variants <code>3.3.1</code></li>
+                <li>tailwind-merge <code>3.7.0</code></li>
+                <li>clsx <code>2.1.1</code></li>
+                <li>classnames <code>2.5.1</code></li>
+              </ul>
+            </aside>
             <p>
               Performance is the first goal of this library, and it is measured
               on every change to it.
             </p>
+
             <p>
               A recipe compiles its config once, when it is created: each
               variant numbers its options, so a selection of variants becomes
-              one integer. Calling the recipe reads each variant's option, looks
-              up its number, and returns the class name cached under that
+              one integer. Calling the recipe reads each variant&#39;s option,
+              looks up its number, and returns the class name cached under that
               integer. The first call for a selection, or a call with an
               undeclared option, builds the class name by concatenating
-              precomputed strings. The cache holds at most one entry per
-              combination of declared options, since an undeclared option is
-              never cached.
+              precomputed strings.
+            </p>
+
+            <p>
+              The cache belongs to the recipe, so create each recipe once, at
+              the top level of a module, not inside a component. It grows with
+              the selections the recipe is called with, up to one entry per
+              combination of declared options.
             </p>
 
             <div class="heading">
-              <h3 id="results">Results</h3>
+              <h3 id="compared-with-other-libraries">
+                Compared with other libraries
+              </h3>
               <a
                 class="heading-anchor"
-                href="#results"
-                aria-label="Permalink to Results"
+                href="#compared-with-other-libraries"
+                aria-label="Permalink to Compared with other libraries"
                 >#</a
               >
             </div>
             <p>
-              Measured on an Apple M1 Pro with Node.js 24.21.0, against the
-              built package. Each iteration calls a recipe with six different
-              selections, which cover default variants, compound variants,
-              boolean variants, and <code>className</code> overrides. Higher is
-              better.
+              Each benchmark runs against the built package. Each iteration
+              calls the same recipe, written for each library, with six
+              different selections, which cover default variants, compound
+              variants, boolean variants, and class overrides. Every library
+              returns the same classes. Higher is better.
             </p>
+
             <div
               class="table-wrap"
               tabindex="0"
               role="region"
-              aria-label="Benchmark results"
+              aria-label="Recipe benchmark"
             >
               <table>
                 <caption class="visually-hidden">
-                  Iterations per second, with and without the cache
+                  Recipe benchmark
                 </caption>
                 <thead>
                   <tr>
-                    <th class="eyebrow" scope="col">Benchmark</th>
+                    <th class="eyebrow" scope="col">Recipe</th>
                     <th class="eyebrow number" scope="col">Iterations/s</th>
                     <th class="eyebrow bar-cell" scope="col">
                       <span class="visually-hidden"
@@ -894,8 +1237,13 @@ export function Button({ tone, size, className, ...props }: ButtonProps) {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Recipe, with cache</td>
-                    <td class="number">2,259,595</td>
+                    <th class="eyebrow group-head" scope="rowgroup" colspan="3">
+                      Without tailwind-merge
+                    </th>
+                  </tr>
+                  <tr>
+                    <td><strong>class-recipe</strong> <code>1.0.0</code></td>
+                    <td class="number">2,244,724</td>
                     <td class="bar-cell">
                       <div
                         class="bar"
@@ -907,41 +1255,163 @@ export function Button({ tone, size, className, ...props }: ButtonProps) {
                     </td>
                   </tr>
                   <tr>
-                    <td class="muted">Recipe, without cache</td>
-                    <td class="number">1,270,927</td>
+                    <td>class-variance-authority <code>0.7.1</code></td>
+                    <td class="number">239,524</td>
                     <td class="bar-cell">
                       <div
-                        class="bar bar-uncached"
+                        class="bar bar-muted"
                         role="img"
-                        aria-label="56% of the fastest"
+                        aria-label="11% of the fastest"
                       >
-                        <span style="width: 56.2%"></span>
+                        <span style="width: 10.7%"></span>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <td>Slot recipe, with cache</td>
-                    <td class="number">1,588,326</td>
+                    <td>tailwind-variants <code>3.3.1</code></td>
+                    <td class="number">169,706</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar bar-muted"
+                        role="img"
+                        aria-label="8% of the fastest"
+                      >
+                        <span style="width: 7.6%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <th class="eyebrow group-head" scope="rowgroup" colspan="3">
+                      With tailwind-merge
+                    </th>
+                  </tr>
+                  <tr>
+                    <td><strong>class-recipe</strong> <code>1.0.0</code></td>
+                    <td class="number">667,525</td>
                     <td class="bar-cell">
                       <div
                         class="bar"
                         role="img"
-                        aria-label="70% of the fastest"
+                        aria-label="30% of the fastest"
                       >
-                        <span style="width: 70.3%"></span>
+                        <span style="width: 29.7%"></span>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <td class="muted">Slot recipe, without cache</td>
-                    <td class="number">569,028</td>
+                    <td>tailwind-variants <code>3.3.1</code></td>
+                    <td class="number">170,760</td>
                     <td class="bar-cell">
                       <div
-                        class="bar bar-uncached"
+                        class="bar bar-muted"
                         role="img"
-                        aria-label="25% of the fastest"
+                        aria-label="8% of the fastest"
                       >
-                        <span style="width: 25.2%"></span>
+                        <span style="width: 7.6%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>class-variance-authority <code>0.7.1</code></td>
+                    <td class="number">158,226</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar bar-muted"
+                        role="img"
+                        aria-label="7% of the fastest"
+                      >
+                        <span style="width: 7%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="Slot recipe benchmark"
+            >
+              <table>
+                <caption class="visually-hidden">
+                  Slot recipe benchmark
+                </caption>
+                <thead>
+                  <tr>
+                    <th class="eyebrow" scope="col">Slot recipe</th>
+                    <th class="eyebrow number" scope="col">Iterations/s</th>
+                    <th class="eyebrow bar-cell" scope="col">
+                      <span class="visually-hidden"
+                        >Relative to the fastest</span
+                      >
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th class="eyebrow group-head" scope="rowgroup" colspan="3">
+                      Without tailwind-merge
+                    </th>
+                  </tr>
+                  <tr>
+                    <td><strong>class-recipe</strong> <code>1.0.0</code></td>
+                    <td class="number">1,281,816</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar"
+                        role="img"
+                        aria-label="100% of the fastest"
+                      >
+                        <span style="width: 100%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>tailwind-variants <code>3.3.1</code></td>
+                    <td class="number">131,425</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar bar-muted"
+                        role="img"
+                        aria-label="10% of the fastest"
+                      >
+                        <span style="width: 10.3%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <th class="eyebrow group-head" scope="rowgroup" colspan="3">
+                      With tailwind-merge
+                    </th>
+                  </tr>
+                  <tr>
+                    <td><strong>class-recipe</strong> <code>1.0.0</code></td>
+                    <td class="number">833,515</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar"
+                        role="img"
+                        aria-label="65% of the fastest"
+                      >
+                        <span style="width: 65%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>tailwind-variants <code>3.3.1</code></td>
+                    <td class="number">142,189</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar bar-muted"
+                        role="img"
+                        aria-label="11% of the fastest"
+                      >
+                        <span style="width: 11.1%"></span>
                       </div>
                     </td>
                   </tr>
@@ -949,10 +1419,171 @@ export function Button({ tone, size, className, ...props }: ButtonProps) {
               </table>
             </div>
             <p>
-              Across six input shapes, <code>cx</code> runs between 7.8 and 21
-              million times per second.
+              Without <code>tailwind-merge</code>, tailwind-variants runs from
+              its <code>lite</code> entry point. With it,
+              class-variance-authority calls <code>twMerge</code> on every
+              result, as its documentation recommends. class-variance-authority
+              has no slots.
             </p>
 
+            <p>
+              Across every input, <code>cx</code>, <code>clsx</code>, and
+              <code>classnames</code> stay within 15% of each other, and none is
+              fastest on every input. Calls per second, in millions:
+            </p>
+
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="Compared with other libraries"
+            >
+              <table>
+                <caption class="visually-hidden">
+                  Compared with other libraries
+                </caption>
+                <thead>
+                  <tr>
+                    <th class="eyebrow" scope="col">Input</th>
+                    <th class="eyebrow number" scope="col">
+                      class-recipe <code>1.0.0</code>
+                    </th>
+                    <th class="eyebrow number" scope="col">
+                      clsx <code>2.1.1</code>
+                    </th>
+                    <th class="eyebrow number" scope="col">
+                      classnames <code>2.5.1</code>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Strings</th>
+                    <td class="number">15.2</td>
+                    <td class="number">16.4</td>
+                    <td class="number">15.6</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">An object</th>
+                    <td class="number">14.6</td>
+                    <td class="number">14.5</td>
+                    <td class="number">13.9</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">An array</th>
+                    <td class="number">13.7</td>
+                    <td class="number">13.7</td>
+                    <td class="number">12.9</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Nested arrays</th>
+                    <td class="number">8.4</td>
+                    <td class="number">8.7</td>
+                    <td class="number">8.1</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Mixed values</th>
+                    <td class="number">7.7</td>
+                    <td class="number">7.3</td>
+                    <td class="number">6.9</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">A component&#39;s classes</th>
+                    <td class="number">15.4</td>
+                    <td class="number">13.7</td>
+                    <td class="number">14.7</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="heading">
+              <h3 id="with-and-without-the-cache">
+                With and without the cache
+              </h3>
+              <a
+                class="heading-anchor"
+                href="#with-and-without-the-cache"
+                aria-label="Permalink to With and without the cache"
+                >#</a
+              >
+            </div>
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="Cache benchmark"
+            >
+              <table>
+                <caption class="visually-hidden">
+                  Cache benchmark
+                </caption>
+                <thead>
+                  <tr>
+                    <th class="eyebrow" scope="col">Cache</th>
+                    <th class="eyebrow number" scope="col">Iterations/s</th>
+                    <th class="eyebrow bar-cell" scope="col">
+                      <span class="visually-hidden"
+                        >Relative to the fastest</span
+                      >
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Recipe, with cache</td>
+                    <td class="number">2,192,565</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar bar-muted"
+                        role="img"
+                        aria-label="100% of the fastest"
+                      >
+                        <span style="width: 100%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="muted">Recipe, without cache</td>
+                    <td class="number">1,222,344</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar bar-muted"
+                        role="img"
+                        aria-label="56% of the fastest"
+                      >
+                        <span style="width: 55.7%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Slot recipe, with cache</td>
+                    <td class="number">1,536,433</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar bar-muted"
+                        role="img"
+                        aria-label="70% of the fastest"
+                      >
+                        <span style="width: 70.1%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="muted">Slot recipe, without cache</td>
+                    <td class="number">547,662</td>
+                    <td class="bar-cell">
+                      <div
+                        class="bar bar-muted"
+                        role="img"
+                        aria-label="25% of the fastest"
+                      >
+                        <span style="width: 25%"></span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <div class="heading">
               <h3 id="method">Method</h3>
               <a
@@ -965,7 +1596,7 @@ export function Button({ tone, size, className, ...props }: ButtonProps) {
             <ul>
               <li>
                 The benchmarks first check that each call returns the expected
-                classes.
+                classes, and that every library compared returns the same ones.
               </li>
               <li>
                 They import the package by its name, so they run the built
@@ -983,31 +1614,101 @@ export function Button({ tone, size, className, ...props }: ButtonProps) {
                 with their cache than without it.
               </li>
             </ul>
+
             <p>
               Run them with <code>pnpm bench</code>, which builds the package
-              first. They are not part of CI, because shared runners are too
-              noisy for timing assertions.
+              first, or with <code>pnpm report</code>, which also writes the
+              results above. The comparisons with other libraries are in the
+              <code>*.compare.bench.ts</code> files. The benchmarks are not part
+              of CI, because shared runners are too noisy for timing assertions.
+            </p>
+          </section>
+
+          <section id="size">
+            <p class="eyebrow section-eyebrow">Reference</p>
+            <div class="heading">
+              <h2>Size</h2>
+              <a
+                class="heading-anchor"
+                href="#size"
+                aria-label="Permalink to Size"
+                >#</a
+              >
+            </div>
+            <p>
+              Each row bundles only the named exports, minified with Rolldown
+              <code>1.2.12</code> and compressed with gzip, so it shows what an
+              app that imports them ships.
+            </p>
+
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="Size"
+            >
+              <table>
+                <caption class="visually-hidden">
+                  Size
+                </caption>
+                <thead>
+                  <tr>
+                    <th class="eyebrow" scope="col">Imports</th>
+                    <th class="eyebrow number" scope="col">Minified</th>
+                    <th class="eyebrow number" scope="col">
+                      Minified and gzipped
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><code>cx</code></th>
+                    <td class="number">0.4 kB</td>
+                    <td class="number">0.2 kB</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>cva</code></th>
+                    <td class="number">3.2 kB</td>
+                    <td class="number">1.3 kB</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>sva</code></th>
+                    <td class="number">3.7 kB</td>
+                    <td class="number">1.5 kB</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Everything</th>
+                    <td class="number">4.6 kB</td>
+                    <td class="number">1.8 kB</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Measured the same way, class-variance-authority with
+              <code>clsx</code> takes 0.5 kB, tailwind-variants takes 3.6 kB
+              from its <code>lite</code> entry point, and
+              <code>tailwind-merge</code>, which any of them may add, takes 8.5
+              kB.
             </p>
           </section>
 
           <section id="api">
             <p class="eyebrow section-eyebrow">Reference</p>
             <div class="heading">
-              <h2>Exports</h2>
+              <h2>API</h2>
               <a
                 class="heading-anchor"
                 href="#api"
-                aria-label="Permalink to Exports"
+                aria-label="Permalink to API"
                 >#</a
               >
             </div>
-            <div
-              class="table-wrap"
-              tabindex="0"
-              role="region"
-              aria-label="Exports"
-            >
+            <div class="table-wrap" tabindex="0" role="region" aria-label="API">
               <table>
+                <caption class="visually-hidden">
+                  API
+                </caption>
                 <thead>
                   <tr>
                     <th class="eyebrow" scope="col">Export</th>
@@ -1016,49 +1717,49 @@ export function Button({ tone, size, className, ...props }: ButtonProps) {
                 </thead>
                 <tbody>
                   <tr>
-                    <td><code>cx</code></td>
+                    <th scope="row"><code>cx</code></th>
                     <td>
                       Joins class names, skipping falsy values. Compatible with
                       <code>clsx</code>.
                     </td>
                   </tr>
                   <tr>
-                    <td><code>cva</code></td>
+                    <th scope="row"><code>cva</code></th>
                     <td>
                       Creates a recipe that returns the class name of one
                       element.
                     </td>
                   </tr>
                   <tr>
-                    <td><code>sva</code></td>
+                    <th scope="row"><code>sva</code></th>
                     <td>
                       Creates a slot recipe that returns the class names of
                       several elements.
                     </td>
                   </tr>
                   <tr>
-                    <td><code>createRecipe</code></td>
+                    <th scope="row"><code>createRecipe</code></th>
                     <td>
                       The same function as <code>cva</code>, under a longer
                       name.
                     </td>
                   </tr>
                   <tr>
-                    <td><code>createSlotRecipe</code></td>
+                    <th scope="row"><code>createSlotRecipe</code></th>
                     <td>
                       The same function as <code>sva</code>, under a longer
                       name.
                     </td>
                   </tr>
                   <tr>
-                    <td><code>createRecipes</code></td>
+                    <th scope="row"><code>createRecipes</code></th>
                     <td>
                       Returns <code>cx</code> and the recipe creators with a
                       custom join or cache setting.
                     </td>
                   </tr>
                   <tr>
-                    <td><code>VariantsOf</code></td>
+                    <th scope="row"><code>VariantsOf</code></th>
                     <td>
                       The variants a recipe accepts, without
                       <code>className</code> or <code>classNames</code>.
@@ -1085,12 +1786,15 @@ export function Button({ tone, size, className, ...props }: ButtonProps) {
               >
             </div>
             <p>The project uses pnpm and Node.js 24 LTS.</p>
+
             <div class="code">
               <div class="code-head"><span class="eyebrow">sh</span></div>
               <pre tabindex="0"><code data-lang="sh">pnpm install
-pnpm check <span class="comment"># build, package checks, typecheck, lint, format check, tests</span>
-pnpm bench <span class="comment"># build, then benchmarks</span>
-pnpm test:coverage <span class="comment"># tests with a coverage report</span></code></pre>
+pnpm check # build, package checks, typecheck, lint, format check, tests
+pnpm bench # build, then benchmarks
+pnpm test:coverage # tests with a coverage report
+pnpm docs:build # write the docs site from this README
+pnpm report # measure speed and size, then update this README and the docs</code></pre>
             </div>
             <p>
               Read
@@ -1098,7 +1802,7 @@ pnpm test:coverage <span class="comment"># tests with a coverage report</span></
                 href="https://github.com/lynstack/class-recipe/blob/main/AGENTS.md"
                 >AGENTS.md</a
               >
-              for the project's rules. Commits follow
+              for the project&#39;s rules. Commits follow
               <a href="https://www.conventionalcommits.org/"
                 >Conventional Commits</a
               >.

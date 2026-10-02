@@ -169,6 +169,9 @@ importers:
       '@arethetypeswrong/core':
         specifier: 0.18.5
         version: 0.18.5
+      '@types/node':
+        specifier: 24.19.1
+        version: 24.19.1
       '@vitest/coverage-v8':
         specifier: 5.0.3
         version: 5.0.3(vitest@5.0.3)
@@ -181,6 +184,9 @@ importers:
       clsx:
         specifier: 2.1.1
         version: 2.1.1
+      marked:
+        specifier: 18.0.14
+        version: 18.0.14
       node:
         specifier: runtime:24.21.0
         version: runtime:24.21.0
@@ -196,6 +202,9 @@ importers:
       publint:
         specifier: 0.3.25
         version: 0.3.25
+      rolldown:
+        specifier: 1.2.12
+        version: 1.2.12
       tailwind-merge:
         specifier: 3.7.0
         version: 3.7.0
@@ -990,6 +999,11 @@ packages:
   magicast@0.5.5:
     resolution: {integrity: sha512-UicdXN8zQ3JHlxVq+28afMXPr1z7WNY6+7EJnzTdQWkTAlMLF5fNCCKxJHBQwGaNGR11581EiQmQzx73+MvszA==}
 
+  marked@18.0.14:
+    resolution: {integrity: sha512-mBHK6FBHuBAlhgRe88w9F0O1AbwwXJUcQibUbC/QcdTbVGAD7aWza+xt3N6oT/jCZx3/OMeS+8rnuiHZcQ9s7A==}
+    engines: {node: '>= 20'}
+    hasBin: true
+
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
@@ -1609,7 +1623,6 @@ snapshots:
   '@types/node@24.19.1':
     dependencies:
       undici-types: 7.24.6
-    optional: true
 
   '@typescript/typescript-aix-ppc64@7.0.2':
     optional: true
@@ -1892,6 +1905,8 @@ snapshots:
       '@babel/types': 7.29.8
       source-map-js: 1.2.2
 
+  marked@18.0.14: {}
+
   mri@1.2.0: {}
 
   nanoid@3.3.19: {}
@@ -2080,8 +2095,7 @@ snapshots:
       '@quansync/fs': 1.1.0
       quansync: 1.0.0
 
-  undici-types@7.24.6:
-    optional: true
+  undici-types@7.24.6: {}
 
   validate-npm-package-name@5.0.1: {}
 

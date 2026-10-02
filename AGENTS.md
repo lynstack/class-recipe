@@ -31,21 +31,32 @@ It is a public package, published to npm as an ES module only.
   against the built bundle, never against the sources directly. The
   `*.compare.bench.ts` benchmarks measure the same work in other libraries
   (`clsx`, `classnames`, `class-variance-authority`, `tailwind-variants`),
-  which are development dependencies only.
+  which are development dependencies only; the README and the docs report
+  their results.
+- `scripts` holds Node.js programs for maintainers, written in TypeScript
+  that Node.js runs directly. `scripts/report` runs the benchmarks,
+  measures the bundle sizes, and saves the results in
+  `scripts/report/latest.json`. `scripts/docs` writes those results between
+  the `<!-- report:name -->` markers of the README, then builds the docs
+  page from the README and the template `scripts/docs/page.html`.
 - `fixtures/consumer` is a package that uses the built library; compiling
   it checks the published declarations.
 - `skills/class-recipe/SKILL.md` is an agent skill that ships with the
   package. It teaches agents in consuming projects to write recipes whose
   classes never conflict.
 - `docs` is the documentation site, plain HTML and CSS served by GitHub
-  Pages from that folder. It follows the lynstack design system and
-  restates the README.
+  Pages from that folder. It follows the lynstack design system.
+  `docs/index.html` is generated from the README; never edit it by hand.
+  Edit the README for content, `scripts/docs/page.html` for the page
+  around it, and `scripts/docs/sections.ts` for where each section of the
+  README appears in the navigation.
 
 ## Commands
 
 Run `pnpm check` before every commit. It builds the package (which runs
 publint and Are the Types Wrong), typechecks, compiles the consumer
-fixture, lints, checks formatting, and runs the tests.
+fixture, lints, checks formatting, runs the tests, and checks that the
+README and the docs match `scripts/report/latest.json` and each other.
 
 - `pnpm test` runs the tests.
 - `pnpm test:coverage` runs the tests and reports coverage. Use it to
@@ -53,6 +64,13 @@ fixture, lints, checks formatting, and runs the tests.
   only to cover a line adds nothing.
 - `pnpm bench` builds the package and runs the benchmarks. Run it after
   every change to `src`.
+- `pnpm report` builds the package, runs every benchmark, measures the
+  bundle sizes, and writes the results, with the date, into the README and
+  the docs. Run it before a release, and after a change that affects speed
+  or size; it takes a few minutes.
+- `pnpm docs:build` writes the README's report markers and builds
+  `docs/index.html` from the README. Run it after every change to the
+  README.
 - `pnpm format` formats every file.
 
 ## Rules
@@ -76,11 +94,12 @@ value (`@returns`), with an `@example` for each function. Keep the README
 and the TSDoc in agreement, and check that every example produces the
 output it shows.
 
-**Keep the README, the docs, and the skill in agreement.** The README,
-`docs/index.html`, and `skills/class-recipe/SKILL.md` describe the same
-API and the same advice. When a change affects what one of them says,
-update the others in the same commit, and check that every example in the
-docs and the skill produces the output it shows.
+**Keep the README, the docs, and the skill in agreement.** The README and
+`skills/class-recipe/SKILL.md` describe the same API and the same advice.
+When a change affects what one of them says, update the other in the same
+commit, run `pnpm docs:build` to rebuild the docs, and check that every
+example in the README and the skill produces the output it shows. Never
+write a measured number by hand; `pnpm report` writes them all.
 
 **Add no runtime dependencies.** The package ships with none. A
 development dependency is added only when its value clearly outweighs its

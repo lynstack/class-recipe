@@ -1,0 +1,103 @@
+{
+  "cpu": "Apple M1 Pro",
+  "cx": [
+    {
+      "name": "strings",
+      "speeds": [
+        { "hz": 15179933.46872877, "name": "class-recipe" },
+        { "hz": 16410166.540525002, "name": "clsx" },
+        { "hz": 15635143.562199023, "name": "classnames" }
+      ]
+    },
+    {
+      "name": "an object",
+      "speeds": [
+        { "hz": 14604110.036081124, "name": "class-recipe" },
+        { "hz": 14458238.074816257, "name": "clsx" },
+        { "hz": 13900043.916596169, "name": "classnames" }
+      ]
+    },
+    {
+      "name": "an array",
+      "speeds": [
+        { "hz": 13679017.781118225, "name": "class-recipe" },
+        { "hz": 13728998.313437374, "name": "clsx" },
+        { "hz": 12875039.49777146, "name": "classnames" }
+      ]
+    },
+    {
+      "name": "nested arrays",
+      "speeds": [
+        { "hz": 8432512.898823923, "name": "class-recipe" },
+        { "hz": 8682010.930643318, "name": "clsx" },
+        { "hz": 8145708.820944056, "name": "classnames" }
+      ]
+    },
+    {
+      "name": "mixed values",
+      "speeds": [
+        { "hz": 7701978.252739122, "name": "class-recipe" },
+        { "hz": 7256535.906500217, "name": "clsx" },
+        { "hz": 6916525.840810497, "name": "classnames" }
+      ]
+    },
+    {
+      "name": "a component's classes",
+      "speeds": [
+        { "hz": 15372120.738943968, "name": "class-recipe" },
+        { "hz": 13692430.9042993, "name": "clsx" },
+        { "hz": 14664819.222874753, "name": "classnames" }
+      ]
+    }
+  ],
+  "date": "2026-10-02",
+  "node": "24.21.0",
+  "recipe": {
+    "merged": [
+      { "hz": 667525.3565053926, "name": "class-recipe" },
+      { "hz": 170760.06679618105, "name": "tailwind-variants" },
+      { "hz": 158226.41456228794, "name": "class-variance-authority" }
+    ],
+    "plain": [
+      { "hz": 2244723.6790043917, "name": "class-recipe" },
+      { "hz": 239524.4153208841, "name": "class-variance-authority" },
+      { "hz": 169706.12838932665, "name": "tailwind-variants" }
+    ]
+  },
+  "recipeCache": [
+    { "hz": 2192564.552717034, "name": "cached" },
+    { "hz": 1222344.179806999, "name": "uncached" }
+  ],
+  "sizes": {
+    "all": { "gzipped": 1828, "minified": 4640 },
+    "classVarianceAuthority": { "gzipped": 522, "minified": 968 },
+    "cva": { "gzipped": 1343, "minified": 3192 },
+    "cx": { "gzipped": 225, "minified": 371 },
+    "sva": { "gzipped": 1520, "minified": 3657 },
+    "tailwindMerge": { "gzipped": 8521, "minified": 27287 },
+    "tailwindVariants": { "gzipped": 3627, "minified": 10761 }
+  },
+  "slotRecipe": {
+    "merged": [
+      { "hz": 833514.9824964748, "name": "class-recipe" },
+      { "hz": 142188.75244938288, "name": "tailwind-variants" }
+    ],
+    "plain": [
+      { "hz": 1281815.7679912893, "name": "class-recipe" },
+      { "hz": 131424.5820698413, "name": "tailwind-variants" }
+    ]
+  },
+  "slotRecipeCache": [
+    { "hz": 1536432.9967092213, "name": "cached" },
+    { "hz": 547662.249702741, "name": "uncached" }
+  ],
+  "versions": {
+    "class-recipe": "1.0.0",
+    "class-variance-authority": "0.7.1",
+    "classnames": "2.5.1",
+    "clsx": "2.1.1",
+    "rolldown": "1.2.12",
+    "tailwind-merge": "3.7.0",
+    "tailwind-variants": "3.3.1"
+  }
+}

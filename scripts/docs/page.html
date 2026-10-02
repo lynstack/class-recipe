@@ -1,0 +1,161 @@
+<!doctype html>
+<!--
+  Generated from README.md by `pnpm docs:build`. Edit README.md, or this
+  page's template in scripts/docs/page.html, instead.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>class-recipe: type-safe class name variants for TypeScript</title>
+    <meta
+      name="description"
+      content="Fast, type-safe class name recipes with variants, compound variants, and slots, plus a clsx-compatible cx."
+    />
+    <link rel="canonical" href="https://lynstack.github.io/class-recipe/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="class-recipe" />
+    <meta
+      property="og:title"
+      content="class-recipe: type-safe class name variants for TypeScript"
+    />
+    <meta
+      property="og:description"
+      content="Fast, type-safe class name recipes with variants, compound variants, and slots, plus a clsx-compatible cx."
+    />
+    <meta
+      property="og:url"
+      content="https://lynstack.github.io/class-recipe/"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      try {
+        const theme = localStorage.getItem("theme");
+        if (theme === "light" || theme === "dark") {
+          document.documentElement.dataset.theme = theme;
+        }
+      } catch {}
+    </script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <header class="topbar">
+      <button
+        class="icon-button menu-button"
+        type="button"
+        aria-label="Open navigation"
+        aria-controls="sidebar"
+        aria-expanded="false"
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <a class="brand" href="#overview">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4.5 5H17a3.5 3.5 0 0 1 0 7H7a3.5 3.5 0 0 0 0 7h9" />
+          <circle cx="20" cy="19" r="1.7" />
+        </svg>
+        <span class="brand-name">class-recipe</span>
+        <span class="eyebrow">by lynstack</span>
+      </a>
+      <a
+        class="icon-button"
+        href="https://www.npmjs.com/package/@lynstack/class-recipe"
+        aria-label="npm package"
+        title="npm package"
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3M12 12l8-4.5M12 12v9M12 12L4 7.5M16 5.25l-8 4.5"
+          />
+        </svg>
+      </a>
+      <a
+        class="icon-button"
+        href="https://github.com/lynstack/class-recipe"
+        aria-label="GitHub repository"
+        title="GitHub repository"
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"
+          />
+        </svg>
+      </a>
+      <button
+        class="icon-button theme-toggle"
+        type="button"
+        aria-label="Switch to dark theme"
+        title="Switch to dark theme"
+      >
+        <svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3h.393a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 2.992z" />
+        </svg>
+        <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M8 12a4 4 0 1 0 8 0 4 4 0 1 0-8 0M3 12h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7-.7.7m0 11.4.7.7m-12.1-.7-.7.7"
+          />
+        </svg>
+      </button>
+    </header>
+
+    <div class="shell">
+      <nav class="sidebar" id="sidebar" aria-label="Documentation">
+        <!-- slot:nav -->
+      </nav>
+      <div class="scrim" aria-hidden="true"></div>
+
+      <main class="main" id="content">
+        <div class="content">
+          <section class="hero" id="overview">
+            <p class="eyebrow package-name">@lynstack/class-recipe</p>
+            <h1>Class name recipes, compiled once.</h1>
+            <p class="lead"><!-- slot:lead --></p>
+            <div class="actions">
+              <a class="button button-primary" href="#installation">
+                Get started
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M13 18l6-6M13 6l6 6" />
+                </svg>
+              </a>
+              <a
+                class="button button-secondary"
+                href="https://github.com/lynstack/class-recipe"
+                >View on GitHub</a
+              >
+            </div>
+            <!-- slot:example -->
+            <dl class="rows">
+              <!-- slot:features -->
+            </dl>
+          </section>
+
+          <!-- slot:sections -->
+
+          <footer class="footer">
+            <span
+              ><a
+                href="https://github.com/lynstack/class-recipe/blob/main/LICENSE"
+                >MIT License</a
+              ></span
+            >
+            <span class="eyebrow">A lynstack project</span>
+          </footer>
+        </div>
+      </main>
+    </div>
+    <p class="visually-hidden" role="status" id="announcer"></p>
+  </body>
+</html>
