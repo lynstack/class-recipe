@@ -28,7 +28,10 @@ It is a public package, published to npm as an ES module only.
   `src/compile-slot-recipe.ts` build the recipe functions.
 - Tests sit next to the code as `*.test.ts`, and benchmarks as
   `*.bench.ts`. A benchmark imports the package by its name, so it runs
-  against the built bundle, never against the sources directly.
+  against the built bundle, never against the sources directly. The
+  `*.compare.bench.ts` benchmarks measure the same work in other libraries
+  (`clsx`, `classnames`, `class-variance-authority`, `tailwind-variants`),
+  which are development dependencies only.
 - `fixtures/consumer` is a package that uses the built library; compiling
   it checks the published declarations.
 - `skills/class-recipe/SKILL.md` is an agent skill that ships with the
