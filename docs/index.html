@@ -227,7 +227,7 @@ button({ tone: &quot;danger&quot; });
                 <dt class="eyebrow">Fast</dt>
                 <dd>
                   A recipe compiles its config once and caches the class name of
-                  each selection, so most calls are a lookup. It runs about 10
+                  each selection, so most calls are a lookup. It runs about 9
                   times as many calls per second as
                   <code>class-variance-authority</code> (see
                   <a href="#performance">Performance</a>).
@@ -369,7 +369,7 @@ button({ tone: &quot;danger&quot; });
                       <span class="visually-hidden">Row</span>
                     </th>
                     <th class="eyebrow" scope="col">
-                      class-recipe <code>1.0.0</code>
+                      class-recipe <code>1.1.0</code>
                     </th>
                     <th class="eyebrow" scope="col">
                       class-variance-authority <code>0.7.1</code>
@@ -401,8 +401,8 @@ button({ tone: &quot;danger&quot; });
                   <tr>
                     <th scope="row">Recipe calls per second</th>
                     <td>2.3 million</td>
-                    <td>243,000</td>
-                    <td>170,000</td>
+                    <td>246,000</td>
+                    <td>171,000</td>
                   </tr>
                   <tr>
                     <th scope="row">Size, minified and gzipped</th>
@@ -1219,7 +1219,7 @@ const button = cva({
                 On an Apple M1 Pro with Node.js 24.21.0, against:
               </p>
               <ul class="measurement-versions">
-                <li>class-recipe <code>1.0.0</code></li>
+                <li>class-recipe <code>1.1.0</code></li>
                 <li>class-variance-authority <code>0.7.1</code></li>
                 <li>tailwind-variants <code>3.3.1</code></li>
                 <li>tailwind-merge <code>3.7.0</code></li>
@@ -1296,8 +1296,8 @@ const button = cva({
                     </th>
                   </tr>
                   <tr>
-                    <td><strong>class-recipe</strong> <code>1.0.0</code></td>
-                    <td class="number">2,308,555</td>
+                    <td><strong>class-recipe</strong> <code>1.1.0</code></td>
+                    <td class="number">2,255,602</td>
                     <td class="bar-cell">
                       <div
                         class="bar"
@@ -1310,27 +1310,27 @@ const button = cva({
                   </tr>
                   <tr>
                     <td>class-variance-authority <code>0.7.1</code></td>
-                    <td class="number">242,615</td>
+                    <td class="number">246,209</td>
                     <td class="bar-cell">
                       <div
                         class="bar bar-muted"
                         role="img"
                         aria-label="11% of the fastest"
                       >
-                        <span style="width: 10.5%"></span>
+                        <span style="width: 10.9%"></span>
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <td>tailwind-variants <code>3.3.1</code></td>
-                    <td class="number">169,587</td>
+                    <td class="number">171,401</td>
                     <td class="bar-cell">
                       <div
                         class="bar bar-muted"
                         role="img"
-                        aria-label="7% of the fastest"
+                        aria-label="8% of the fastest"
                       >
-                        <span style="width: 7.3%"></span>
+                        <span style="width: 7.6%"></span>
                       </div>
                     </td>
                   </tr>
@@ -1342,41 +1342,41 @@ const button = cva({
                     </th>
                   </tr>
                   <tr>
-                    <td><strong>class-recipe</strong> <code>1.0.0</code></td>
-                    <td class="number">671,858</td>
+                    <td><strong>class-recipe</strong> <code>1.1.0</code></td>
+                    <td class="number">667,502</td>
                     <td class="bar-cell">
                       <div
                         class="bar"
                         role="img"
-                        aria-label="29% of the fastest"
+                        aria-label="30% of the fastest"
                       >
-                        <span style="width: 29.1%"></span>
+                        <span style="width: 29.6%"></span>
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <td>tailwind-variants <code>3.3.1</code></td>
-                    <td class="number">170,460</td>
+                    <td class="number">172,601</td>
                     <td class="bar-cell">
                       <div
                         class="bar bar-muted"
                         role="img"
-                        aria-label="7% of the fastest"
+                        aria-label="8% of the fastest"
                       >
-                        <span style="width: 7.4%"></span>
+                        <span style="width: 7.7%"></span>
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <td>class-variance-authority <code>0.7.1</code></td>
-                    <td class="number">157,041</td>
+                    <td class="number">158,296</td>
                     <td class="bar-cell">
                       <div
                         class="bar bar-muted"
                         role="img"
                         aria-label="7% of the fastest"
                       >
-                        <span style="width: 6.8%"></span>
+                        <span style="width: 7%"></span>
                       </div>
                     </td>
                   </tr>
@@ -1411,8 +1411,8 @@ const button = cva({
                     </th>
                   </tr>
                   <tr>
-                    <td><strong>class-recipe</strong> <code>1.0.0</code></td>
-                    <td class="number">1,300,048</td>
+                    <td><strong>class-recipe</strong> <code>1.1.0</code></td>
+                    <td class="number">1,242,724</td>
                     <td class="bar-cell">
                       <div
                         class="bar"
@@ -1425,14 +1425,14 @@ const button = cva({
                   </tr>
                   <tr>
                     <td>tailwind-variants <code>3.3.1</code></td>
-                    <td class="number">143,496</td>
+                    <td class="number">143,632</td>
                     <td class="bar-cell">
                       <div
                         class="bar bar-muted"
                         role="img"
-                        aria-label="11% of the fastest"
+                        aria-label="12% of the fastest"
                       >
-                        <span style="width: 11%"></span>
+                        <span style="width: 11.6%"></span>
                       </div>
                     </td>
                   </tr>
@@ -1444,28 +1444,28 @@ const button = cva({
                     </th>
                   </tr>
                   <tr>
-                    <td><strong>class-recipe</strong> <code>1.0.0</code></td>
-                    <td class="number">846,772</td>
+                    <td><strong>class-recipe</strong> <code>1.1.0</code></td>
+                    <td class="number">815,682</td>
                     <td class="bar-cell">
                       <div
                         class="bar"
                         role="img"
-                        aria-label="65% of the fastest"
+                        aria-label="66% of the fastest"
                       >
-                        <span style="width: 65.1%"></span>
+                        <span style="width: 65.6%"></span>
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <td>tailwind-variants <code>3.3.1</code></td>
-                    <td class="number">141,459</td>
+                    <td class="number">142,519</td>
                     <td class="bar-cell">
                       <div
                         class="bar bar-muted"
                         role="img"
                         aria-label="11% of the fastest"
                       >
-                        <span style="width: 10.9%"></span>
+                        <span style="width: 11.5%"></span>
                       </div>
                     </td>
                   </tr>
@@ -1482,7 +1482,7 @@ const button = cva({
 
             <p>
               Across every input, <code>cx</code>, <code>clsx</code>, and
-              <code>classnames</code> stay within 30% of each other, and none is
+              <code>classnames</code> stay within 20% of each other, and none is
               fastest on every input. Calls per second, in millions:
             </p>
 
@@ -1500,7 +1500,7 @@ const button = cva({
                   <tr>
                     <th class="eyebrow" scope="col">Input</th>
                     <th class="eyebrow number" scope="col">
-                      class-recipe <code>1.0.0</code>
+                      class-recipe <code>1.1.0</code>
                     </th>
                     <th class="eyebrow number" scope="col">
                       clsx <code>2.1.1</code>
@@ -1513,39 +1513,39 @@ const button = cva({
                 <tbody>
                   <tr>
                     <th scope="row">Strings</th>
-                    <td class="number">16.5</td>
-                    <td class="number">15.4</td>
-                    <td class="number">14.8</td>
+                    <td class="number">16.8</td>
+                    <td class="number">16.2</td>
+                    <td class="number">15.5</td>
                   </tr>
                   <tr>
                     <th scope="row">An object</th>
-                    <td class="number">11.4</td>
-                    <td class="number">13.3</td>
+                    <td class="number">14.6</td>
+                    <td class="number">15.1</td>
                     <td class="number">14.2</td>
                   </tr>
                   <tr>
                     <th scope="row">An array</th>
-                    <td class="number">15.3</td>
-                    <td class="number">13.4</td>
+                    <td class="number">15.9</td>
+                    <td class="number">14.6</td>
                     <td class="number">13.8</td>
                   </tr>
                   <tr>
                     <th scope="row">Nested arrays</th>
-                    <td class="number">9.6</td>
-                    <td class="number">9.1</td>
+                    <td class="number">9.5</td>
+                    <td class="number">8.9</td>
                     <td class="number">8.3</td>
                   </tr>
                   <tr>
                     <th scope="row">Mixed values</th>
                     <td class="number">7.8</td>
+                    <td class="number">7.3</td>
                     <td class="number">7.1</td>
-                    <td class="number">7.2</td>
                   </tr>
                   <tr>
                     <th scope="row">A component&#39;s classes</th>
-                    <td class="number">15.6</td>
-                    <td class="number">13.4</td>
-                    <td class="number">13.7</td>
+                    <td class="number">15.7</td>
+                    <td class="number">13.2</td>
+                    <td class="number">14.2</td>
                   </tr>
                 </tbody>
               </table>
@@ -1585,7 +1585,7 @@ const button = cva({
                 <tbody>
                   <tr>
                     <td>Recipe, with cache</td>
-                    <td class="number">2,246,806</td>
+                    <td class="number">2,230,559</td>
                     <td class="bar-cell">
                       <div
                         class="bar bar-muted"
@@ -1598,40 +1598,40 @@ const button = cva({
                   </tr>
                   <tr>
                     <td class="muted">Recipe, without cache</td>
-                    <td class="number">1,237,455</td>
+                    <td class="number">1,265,904</td>
                     <td class="bar-cell">
                       <div
                         class="bar bar-muted"
                         role="img"
-                        aria-label="55% of the fastest"
+                        aria-label="57% of the fastest"
                       >
-                        <span style="width: 55.1%"></span>
+                        <span style="width: 56.8%"></span>
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <td>Slot recipe, with cache</td>
-                    <td class="number">1,548,942</td>
+                    <td class="number">1,594,351</td>
                     <td class="bar-cell">
                       <div
                         class="bar bar-muted"
                         role="img"
-                        aria-label="69% of the fastest"
+                        aria-label="71% of the fastest"
                       >
-                        <span style="width: 68.9%"></span>
+                        <span style="width: 71.5%"></span>
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <td class="muted">Slot recipe, without cache</td>
-                    <td class="number">557,184</td>
+                    <td class="number">550,936</td>
                     <td class="bar-cell">
                       <div
                         class="bar bar-muted"
                         role="img"
                         aria-label="25% of the fastest"
                       >
-                        <span style="width: 24.8%"></span>
+                        <span style="width: 24.7%"></span>
                       </div>
                     </td>
                   </tr>

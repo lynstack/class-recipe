@@ -33,7 +33,7 @@ button({ tone: "danger" });
 ```
 
 - **Fast.** A recipe compiles its config once and caches the class name of
-  each selection, so most calls are a lookup. It runs about <!-- report:speedup -->10<!-- /report:speedup -->
+  each selection, so most calls are a lookup. It runs about <!-- report:speedup -->9<!-- /report:speedup -->
   times as many calls per second as `class-variance-authority` (see
   [Performance](#performance)).
 - **Type-safe.** Variant names, options, and slots are inferred from the
@@ -88,12 +88,12 @@ props into class names. It differs from them in these ways:
 
 <!-- report:why -->
 
-|                            | class-recipe `1.0.0`      | class-variance-authority `0.7.1` | tailwind-variants `3.3.1`, lite |
+|                            | class-recipe `1.1.0`      | class-variance-authority `0.7.1` | tailwind-variants `3.3.1`, lite |
 | -------------------------- | ------------------------- | -------------------------------- | ------------------------------- |
 | Slots                      | Yes                       | No                               | Yes                             |
 | Variant without a default  | Required by its type      | Optional                         | Optional                        |
 | Conflict resolution        | Any join function, cached | Call `twMerge` on the result     | `tailwind-merge`, built in      |
-| Recipe calls per second    | 2.3 million               | 243,000                          | 170,000                         |
+| Recipe calls per second    | 2.3 million               | 246,000                          | 171,000                         |
 | Size, minified and gzipped | 1.9 kB                    | 0.5 kB                           | 3.6 kB                          |
 
 <!-- /report:why -->
@@ -548,7 +548,7 @@ Two behaviors change:
 
 > **Measured on October 3, 2026.**
 >
-> On an Apple M1 Pro with Node.js 24.21.0, against class-recipe `1.0.0`,
+> On an Apple M1 Pro with Node.js 24.21.0, against class-recipe `1.1.0`,
 > class-variance-authority `0.7.1`, tailwind-variants `3.3.1`,
 > tailwind-merge `3.7.0`, clsx `2.1.1`, and classnames `2.5.1`.
 
@@ -580,14 +580,14 @@ overrides. Every library returns the same classes. Higher is better.
 
 | Recipe                           | Iterations per second | With `tailwind-merge` |
 | -------------------------------- | --------------------: | --------------------: |
-| class-recipe `1.0.0`             |             2,308,555 |               671,858 |
-| class-variance-authority `0.7.1` |               242,615 |               157,041 |
-| tailwind-variants `3.3.1`        |               169,587 |               170,460 |
+| class-recipe `1.1.0`             |             2,255,602 |               667,502 |
+| class-variance-authority `0.7.1` |               246,209 |               158,296 |
+| tailwind-variants `3.3.1`        |               171,401 |               172,601 |
 
 | Slot recipe               | Iterations per second | With `tailwind-merge` |
 | ------------------------- | --------------------: | --------------------: |
-| class-recipe `1.0.0`      |             1,300,048 |               846,772 |
-| tailwind-variants `3.3.1` |               143,496 |               141,459 |
+| class-recipe `1.1.0`      |             1,242,724 |               815,682 |
+| tailwind-variants `3.3.1` |               143,632 |               142,519 |
 
 <!-- /report:comparison -->
 
@@ -597,17 +597,17 @@ as its documentation recommends. class-variance-authority has no slots.
 
 <!-- report:cx -->
 
-Across every input, `cx`, `clsx`, and `classnames` stay within 30% of each
+Across every input, `cx`, `clsx`, and `classnames` stay within 20% of each
 other, and none is fastest on every input. Calls per second, in millions:
 
-| Input                 | class-recipe `1.0.0` | clsx `2.1.1` | classnames `2.5.1` |
+| Input                 | class-recipe `1.1.0` | clsx `2.1.1` | classnames `2.5.1` |
 | --------------------- | -------------------: | -----------: | -----------------: |
-| Strings               |                 16.5 |         15.4 |               14.8 |
-| An object             |                 11.4 |         13.3 |               14.2 |
-| An array              |                 15.3 |         13.4 |               13.8 |
-| Nested arrays         |                  9.6 |          9.1 |                8.3 |
-| Mixed values          |                  7.8 |          7.1 |                7.2 |
-| A component's classes |                 15.6 |         13.4 |               13.7 |
+| Strings               |                 16.8 |         16.2 |               15.5 |
+| An object             |                 14.6 |         15.1 |               14.2 |
+| An array              |                 15.9 |         14.6 |               13.8 |
+| Nested arrays         |                  9.5 |          8.9 |                8.3 |
+| Mixed values          |                  7.8 |          7.3 |                7.1 |
+| A component's classes |                 15.7 |         13.2 |               14.2 |
 
 <!-- /report:cx -->
 
@@ -617,13 +617,13 @@ other, and none is fastest on every input. Calls per second, in millions:
 
 | Recipe        | Iterations per second |
 | ------------- | --------------------: |
-| With cache    |             2,246,806 |
-| Without cache |             1,237,455 |
+| With cache    |             2,230,559 |
+| Without cache |             1,265,904 |
 
 | Slot recipe   | Iterations per second |
 | ------------- | --------------------: |
-| With cache    |             1,548,942 |
-| Without cache |               557,184 |
+| With cache    |             1,594,351 |
+| Without cache |               550,936 |
 
 <!-- /report:cache -->
 
