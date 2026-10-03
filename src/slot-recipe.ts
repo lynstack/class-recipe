@@ -3,11 +3,12 @@ import type {
   DefaultVariants,
   RecipeFunction,
   Simplify,
+  VariantKey,
   VariantSelection,
 } from "./types.js";
 import type {
+  LooseSlotRecipe,
   LooseSlotRecipeConfig,
-  LooseSlotRecipeProps,
 } from "./compile-slot-recipe.js";
 import type { BuildOptions } from "./build-options.js";
 import type { LooseVariants } from "./variants.js";
@@ -121,7 +122,7 @@ type SlotRecipeProps<
 
 /**
  * A function that returns the class name of every slot for a selection of
- * variants.
+ * variants, with the names of those variants in `variantKeys`.
  *
  * @typeParam Slot - The names of the slots.
  * @typeParam Props - The properties the recipe accepts; see
@@ -130,7 +131,14 @@ type SlotRecipeProps<
 type SlotRecipe<Slot extends string, Props> = RecipeFunction<
   Props,
   SlotClassNames<Slot>
->;
+> & {
+  /**
+   * The names of the recipe's variants, in the order of
+   * `Object.keys(config.variants)`. Use it to split a component's props into
+   * the recipe's variants and the rest.
+   */
+  readonly variantKeys: readonly VariantKey<Props>[];
+};
 
 /**
  * The type of {@link createSlotRecipe}.
@@ -165,9 +173,7 @@ function makeCreateSlotRecipe(options: BuildOptions): CreateSlotRecipe {
     config: SlotRecipeConfig<Slot, Variants, DefaultedName>,
   ): SlotRecipe<Slot, SlotRecipeProps<Slot, Variants, DefaultedName>>;
 
-  function createSlotRecipe(
-    config: LooseSlotRecipeConfig,
-  ): (props?: LooseSlotRecipeProps) => SlotClassNames<string> {
+  function createSlotRecipe(config: LooseSlotRecipeConfig): LooseSlotRecipe {
     return buildSlotRecipe(config, options);
   }
 
@@ -191,6 +197,7 @@ function makeCreateSlotRecipe(options: BuildOptions): CreateSlotRecipe {
  * classes. A variant without a default is required, except a boolean
  * variant, whose only options are `"true"` and `"false"` and which defaults
  * to `false`. An option that the config does not declare adds no classes.
+ * The recipe's `variantKeys` property lists the names of its variants.
  *
  * Classes are added, never removed, so without a join function that merges
  * them, set each CSS property of an element in one place; see
@@ -213,6 +220,7 @@ function makeCreateSlotRecipe(options: BuildOptions): CreateSlotRecipe {
  * const classNames = card({ classNames: { root: "shadow" } });
  * classNames.root; // => "rounded-lg border p-4 shadow"
  * classNames.title; // => "font-medium text-base"
+ * card.variantKeys; // => ["size"]
  * ```
  */
 const createSlotRecipe: CreateSlotRecipe =

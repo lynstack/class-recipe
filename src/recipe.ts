@@ -3,9 +3,10 @@ import type {
   DefaultVariants,
   RecipeFunction,
   Simplify,
+  VariantKey,
   VariantSelection,
 } from "./types.js";
-import type { LooseRecipeConfig, LooseRecipeProps } from "./compile-recipe.js";
+import type { LooseRecipe, LooseRecipeConfig } from "./compile-recipe.js";
 import type { BuildOptions } from "./build-options.js";
 import type { LooseVariants } from "./variants.js";
 import { buildRecipe } from "./compile-recipe.js";
@@ -78,12 +79,20 @@ type RecipeProps<Variants, DefaultedName extends keyof Variants> = Simplify<
 >;
 
 /**
- * A function that returns the class name for a selection of variants.
+ * A function that returns the class name for a selection of variants, with
+ * the names of those variants in `variantKeys`.
  *
  * @typeParam Props - The properties the recipe accepts; see
  *   {@link RecipeProps}.
  */
-type Recipe<Props> = RecipeFunction<Props, string>;
+type Recipe<Props> = RecipeFunction<Props, string> & {
+  /**
+   * The names of the recipe's variants, in the order of
+   * `Object.keys(config.variants)`. Use it to split a component's props into
+   * the recipe's variants and the rest.
+   */
+  readonly variantKeys: readonly VariantKey<Props>[];
+};
 
 /**
  * The type of {@link createRecipe}.
@@ -115,9 +124,7 @@ function makeCreateRecipe(options: BuildOptions): CreateRecipe {
     config: RecipeConfig<Variants, DefaultedName>,
   ): Recipe<RecipeProps<Variants, DefaultedName>>;
 
-  function createRecipe(
-    config: LooseRecipeConfig,
-  ): (props?: LooseRecipeProps) => string {
+  function createRecipe(config: LooseRecipeConfig): LooseRecipe {
     return buildRecipe(config, options);
   }
 
@@ -138,7 +145,8 @@ function makeCreateRecipe(options: BuildOptions): CreateRecipe {
  *
  * A variant without a default is required, except a boolean variant, whose
  * only options are `"true"` and `"false"` and which defaults to `false`. An
- * option that the config does not declare adds no classes.
+ * option that the config does not declare adds no classes. The recipe's
+ * `variantKeys` property lists the names of its variants.
  *
  * Classes are added, never removed, so without a join function that merges
  * them, set each CSS property of an element in one place; see
@@ -163,6 +171,8 @@ function makeCreateRecipe(options: BuildOptions): CreateRecipe {
  *
  * button({ tone: "neutral", size: "sm", className: "w-full" });
  * // => "inline-flex items-center rounded-md bg-gray-100 h-8 px-2 w-full"
+ *
+ * button.variantKeys; // => ["tone", "size"]
  * ```
  */
 const createRecipe: CreateRecipe = makeCreateRecipe(defaultBuildOptions);

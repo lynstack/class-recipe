@@ -97,6 +97,21 @@ type RecipeFunction<Props, Result> =
     ? (props?: Props) => Result
     : (props: Props) => Result;
 
+type KeyName<Key> = Key extends string
+  ? Key
+  : Key extends number
+    ? `${Key}`
+    : never;
+
+/**
+ * The name of each variant in a recipe's props, as a string.
+ *
+ * @typeParam Props - The properties the recipe accepts.
+ */
+type VariantKey<Props> = KeyName<
+  Exclude<keyof Props, "className" | "classNames">
+>;
+
 /**
  * The variants a recipe accepts, without its `className` or `classNames`
  * property. Use it to type the props of a component built on a recipe.
@@ -122,6 +137,7 @@ export type {
   RecipeFunction,
   Simplify,
   VariantOption,
+  VariantKey,
   VariantSelection,
   VariantsOf,
 };

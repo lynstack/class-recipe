@@ -43,6 +43,9 @@ const merged = createRecipes({
 });
 
 const className: string = button({ tone: "danger" });
+const buttonKeys: readonly ("disabled" | "size" | "tone")[] =
+  button.variantKeys;
+const cardKeys: readonly "size"[] = card.variantKeys;
 
-export { button, card, className, field, merged, pill };
+export { button, buttonKeys, card, cardKeys, className, field, merged, pill };
 export type { ButtonVariants };

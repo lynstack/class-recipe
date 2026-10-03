@@ -97,6 +97,20 @@ describe(createRecipes, () => {
     expect(second).not.toBe(first);
   });
 
+  it("lists the variant names of configured recipes", () => {
+    const configured = createRecipes({
+      cache: false,
+      join: keepLastOfEachPrefix,
+    });
+    const button = configured.cva({
+      variants: { size: { sm: "h-8" }, tone: {} },
+    });
+    const card = configured.sva({ slots: ["root"], variants: { size: {} } });
+
+    expect(button.variantKeys).toStrictEqual(["size", "tone"]);
+    expect(card.variantKeys).toStrictEqual(["size"]);
+  });
+
   it("resolves conflicts without the cache", () => {
     const button = createRecipes({
       cache: false,

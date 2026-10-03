@@ -2,6 +2,7 @@ import type {
   CompiledVariants,
   LooseVariants,
   SelectedVariants,
+  WithVariantKeys,
 } from "./variants.js";
 import { appendClasses, createJoinClasses } from "./join-classes.js";
 import {
@@ -10,6 +11,7 @@ import {
   matches,
   noOption,
   noProps,
+  withVariantKeys,
 } from "./variants.js";
 import type { BuildOptions } from "./build-options.js";
 import { createSelector } from "./selector.js";
@@ -32,6 +34,8 @@ interface LooseRecipeProps extends SelectedVariants {
   readonly className?: string | undefined;
 }
 
+type LooseRecipe = WithVariantKeys<(props?: LooseRecipeProps | null) => string>;
+
 /**
  * Returns the recipe function for `config`, whose classes are combined with
  * `options.join` and cached unless `options.cache` is false.
@@ -39,7 +43,7 @@ interface LooseRecipeProps extends SelectedVariants {
 function buildRecipe(
   config: LooseRecipeConfig,
   options: BuildOptions = defaultBuildOptions,
-): (props?: LooseRecipeProps | null) => string {
+): LooseRecipe {
   const { base = "" } = config;
   const { join } = options;
   const compiled = compileRecipe(config);
@@ -53,7 +57,7 @@ function buildRecipe(
     options,
   );
 
-  return (props) => {
+  const recipe = (props?: LooseRecipeProps | null): string => {
     const selected = props ?? noProps;
     const classes = classesOf(selected);
     const { className } = selected;
@@ -61,6 +65,7 @@ function buildRecipe(
       ? joinClasses([classes, className])
       : classes;
   };
+  return withVariantKeys(recipe, compiled);
 }
 
 function compileRecipe(config: LooseRecipeConfig): CompiledVariants<string> {
@@ -97,4 +102,4 @@ function concatSelected(
 }
 
 export { buildRecipe };
-export type { LooseRecipeConfig, LooseRecipeProps };
+export type { LooseRecipe, LooseRecipeConfig, LooseRecipeProps };

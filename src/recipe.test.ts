@@ -106,6 +106,25 @@ describe(createRecipe, () => {
     }>();
   });
 
+  it("lists the names of its variants", () => {
+    const recipe = createRecipe({ variants: { 2: { sm: "p-2" } } });
+
+    expect(badge.variantKeys).toStrictEqual(["tone", "size"]);
+    expect(recipe.variantKeys).toStrictEqual(["2"]);
+    expect(Object.isFrozen(badge.variantKeys)).toBe(true);
+    expectTypeOf(badge.variantKeys).toEqualTypeOf<
+      readonly ("tone" | "size")[]
+    >();
+    expectTypeOf(recipe.variantKeys).toEqualTypeOf<readonly "2"[]>();
+  });
+
+  it("lists no variant names without variants", () => {
+    const recipe = createRecipe({ base: "p-2", variants: {} });
+
+    expect(recipe.variantKeys).toStrictEqual([]);
+    expectTypeOf(recipe.variantKeys).toEqualTypeOf<readonly never[]>();
+  });
+
   it("makes the argument optional only when every variant has a default", () => {
     const recipe = createRecipe({
       variants: { size: { sm: "p-2", md: "p-4" } },

@@ -161,6 +161,14 @@ describe(createSlotRecipe, () => {
     }>();
   });
 
+  it("lists the names of its variants", () => {
+    expect(card.variantKeys).toStrictEqual(["tone", "size"]);
+    expect(Object.isFrozen(card.variantKeys)).toBe(true);
+    expectTypeOf(card.variantKeys).toEqualTypeOf<
+      readonly ("tone" | "size")[]
+    >();
+  });
+
   it("rejects a missing required variant", () => {
     // @ts-expect-error tone has no default, so it is required
     expect(card({ size: "sm" })).toStrictEqual({

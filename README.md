@@ -33,7 +33,7 @@ button({ tone: "danger" });
 ```
 
 - **Fast.** A recipe compiles its config once and caches the class name of
-  each selection, so most calls are a lookup. It runs about <!-- report:speedup -->9<!-- /report:speedup -->
+  each selection, so most calls are a lookup. It runs about <!-- report:speedup -->10<!-- /report:speedup -->
   times as many calls per second as `class-variance-authority` (see
   [Performance](#performance)).
 - **Type-safe.** Variant names, options, and slots are inferred from the
@@ -42,7 +42,7 @@ button({ tone: "danger" });
 - **Pluggable.** Bring your own join function, such as `twMerge`, to
   resolve conflicting classes. It runs once per selection, not on every
   call.
-- **Small.** <!-- report:size-all -->1.8 kB<!-- /report:size-all --> minified
+- **Small.** <!-- report:size-all -->1.9 kB<!-- /report:size-all --> minified
   and gzipped for the whole package, <!-- report:size-cx -->0.2 kB<!-- /report:size-cx -->
   for `cx` alone. No dependencies, ES modules only, and tree-shakable (see
   [Size](#size)).
@@ -93,8 +93,8 @@ props into class names. It differs from them in these ways:
 | Slots                      | Yes                       | No                               | Yes                             |
 | Variant without a default  | Required by its type      | Optional                         | Optional                        |
 | Conflict resolution        | Any join function, cached | Call `twMerge` on the result     | `tailwind-merge`, built in      |
-| Recipe calls per second    | 2.2 million               | 235,000                          | 169,000                         |
-| Size, minified and gzipped | 1.8 kB                    | 0.5 kB                           | 3.6 kB                          |
+| Recipe calls per second    | 2.3 million               | 243,000                          | 170,000                         |
+| Size, minified and gzipped | 1.9 kB                    | 0.5 kB                           | 3.6 kB                          |
 
 <!-- /report:why -->
 
@@ -249,6 +249,43 @@ recipes](#writing-conflict-free-recipes)), or use a join function such as
 tailwind-merge](#resolving-conflicts-with-tailwind-merge)) to let these
 classes replace conflicting ones.
 
+### Variant keys
+
+A recipe lists the names of its variants in `variantKeys`, a frozen array
+typed with those names. Use it to split a component's props into the
+recipe's variants and the rest, without writing the names again.
+
+```tsx
+import { cva, type VariantsOf } from "@lynstack/class-recipe";
+import type { ComponentProps } from "react";
+
+const button = cva({
+  base: "inline-flex rounded-md",
+  variants: {
+    tone: { neutral: "bg-gray-100", danger: "bg-red-600 text-white" },
+    size: { sm: "h-8 px-3", md: "h-10 px-4" },
+  },
+  defaultVariants: { size: "md" },
+});
+
+button.variantKeys; // => ["tone", "size"]
+
+type ButtonProps = ComponentProps<"button"> & VariantsOf<typeof button>;
+
+export function Button({ className, ...props }: ButtonProps) {
+  const buttonProps: Partial<typeof props> = { ...props };
+  for (const key of button.variantKeys) {
+    delete buttonProps[key];
+  }
+  return (
+    <button {...buttonProps} className={button({ ...props, className })} />
+  );
+}
+```
+
+The recipe reads only its variants and `className`, so it can take every
+prop of the component. A slot recipe has the same property.
+
 ### Undeclared options
 
 The types accept only the options the config declares. A value from
@@ -299,6 +336,8 @@ const small = card({ size: "sm", classNames: { body: "italic" } });
 small.root; // => "rounded-lg border p-3"
 small.header; // => "font-semibold text-sm"
 small.body; // => "text-gray-600 italic"
+
+card.variantKeys; // => ["size", "elevated"]
 ```
 
 A slot recipe follows the same rules as a recipe, with an object of
@@ -507,7 +546,7 @@ Two behaviors change:
 
 <!-- report:measurement -->
 
-> **Measured on October 2, 2026.**
+> **Measured on October 3, 2026.**
 >
 > On an Apple M1 Pro with Node.js 24.21.0, against class-recipe `1.0.0`,
 > class-variance-authority `0.7.1`, tailwind-variants `3.3.1`,
@@ -541,14 +580,14 @@ overrides. Every library returns the same classes. Higher is better.
 
 | Recipe                           | Iterations per second | With `tailwind-merge` |
 | -------------------------------- | --------------------: | --------------------: |
-| class-recipe `1.0.0`             |             2,195,149 |               660,290 |
-| class-variance-authority `0.7.1` |               235,463 |               156,613 |
-| tailwind-variants `3.3.1`        |               169,158 |               169,292 |
+| class-recipe `1.0.0`             |             2,308,555 |               671,858 |
+| class-variance-authority `0.7.1` |               242,615 |               157,041 |
+| tailwind-variants `3.3.1`        |               169,587 |               170,460 |
 
 | Slot recipe               | Iterations per second | With `tailwind-merge` |
 | ------------------------- | --------------------: | --------------------: |
-| class-recipe `1.0.0`      |             1,220,238 |               748,028 |
-| tailwind-variants `3.3.1` |               140,106 |               141,839 |
+| class-recipe `1.0.0`      |             1,300,048 |               846,772 |
+| tailwind-variants `3.3.1` |               143,496 |               141,459 |
 
 <!-- /report:comparison -->
 
@@ -558,17 +597,17 @@ as its documentation recommends. class-variance-authority has no slots.
 
 <!-- report:cx -->
 
-Across every input, `cx`, `clsx`, and `classnames` stay within 25% of each
+Across every input, `cx`, `clsx`, and `classnames` stay within 30% of each
 other, and none is fastest on every input. Calls per second, in millions:
 
 | Input                 | class-recipe `1.0.0` | clsx `2.1.1` | classnames `2.5.1` |
 | --------------------- | -------------------: | -----------: | -----------------: |
-| Strings               |                 16.5 |         16.4 |               15.4 |
-| An object             |                 14.5 |         14.7 |               13.8 |
-| An array              |                 15.5 |         14.3 |               12.8 |
-| Nested arrays         |                  9.5 |          8.8 |                8.2 |
-| Mixed values          |                  7.5 |          7.1 |                6.9 |
-| A component's classes |                 15.7 |         13.3 |               14.0 |
+| Strings               |                 16.5 |         15.4 |               14.8 |
+| An object             |                 11.4 |         13.3 |               14.2 |
+| An array              |                 15.3 |         13.4 |               13.8 |
+| Nested arrays         |                  9.6 |          9.1 |                8.3 |
+| Mixed values          |                  7.8 |          7.1 |                7.2 |
+| A component's classes |                 15.6 |         13.4 |               13.7 |
 
 <!-- /report:cx -->
 
@@ -578,13 +617,13 @@ other, and none is fastest on every input. Calls per second, in millions:
 
 | Recipe        | Iterations per second |
 | ------------- | --------------------: |
-| With cache    |             2,153,674 |
-| Without cache |             1,272,935 |
+| With cache    |             2,246,806 |
+| Without cache |             1,237,455 |
 
 | Slot recipe   | Iterations per second |
 | ------------- | --------------------: |
-| With cache    |             1,574,600 |
-| Without cache |               567,054 |
+| With cache    |             1,548,942 |
+| Without cache |               557,184 |
 
 <!-- /report:cache -->
 
@@ -617,9 +656,9 @@ compressed with gzip, so it shows what an app that imports them ships.
 | Imports    | Minified | Minified and gzipped |
 | ---------- | -------: | -------------------: |
 | `cx`       |   0.4 kB |               0.2 kB |
-| `cva`      |   3.2 kB |               1.3 kB |
-| `sva`      |   3.7 kB |               1.5 kB |
-| Everything |   4.6 kB |               1.8 kB |
+| `cva`      |   3.3 kB |               1.4 kB |
+| `sva`      |   3.7 kB |               1.6 kB |
+| Everything |   4.7 kB |               1.9 kB |
 
 Measured the same way, class-variance-authority with `clsx` takes 0.5 kB,
 tailwind-variants takes 3.6 kB from its `lite` entry point,

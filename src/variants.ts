@@ -250,6 +250,21 @@ function toOptionNames(value: unknown): readonly string[] {
     .filter((option) => option !== undefined);
 }
 
+/** A recipe function with the names of its variants. */
+type WithVariantKeys<Recipe> = Recipe & {
+  readonly variantKeys: readonly string[];
+};
+
+/** Adds the names of the compiled variants to `recipe` as `variantKeys`. */
+function withVariantKeys<Recipe extends object>(
+  recipe: Recipe,
+  compiled: CompiledVariants<unknown>,
+): WithVariantKeys<Recipe> {
+  return Object.assign(recipe, {
+    variantKeys: Object.freeze([...compiled.names]),
+  });
+}
+
 function isBooleanName(option: string): boolean {
   return option === "true" || option === "false";
 }
@@ -262,6 +277,7 @@ export {
   noProps,
   select,
   undeclared,
+  withVariantKeys,
 };
 export type {
   CompiledVariants,
@@ -269,4 +285,5 @@ export type {
   LooseCompoundVariant,
   LooseVariants,
   SelectedVariants,
+  WithVariantKeys,
 };

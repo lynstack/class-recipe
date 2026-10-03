@@ -2,13 +2,19 @@ import type {
   CompiledVariants,
   LooseVariants,
   SelectedVariants,
+  WithVariantKeys,
 } from "./variants.js";
 import {
   appendClasses,
   concatClasses,
   createJoinClasses,
 } from "./join-classes.js";
-import { collectClasses, compileVariants, noProps } from "./variants.js";
+import {
+  collectClasses,
+  compileVariants,
+  noProps,
+  withVariantKeys,
+} from "./variants.js";
 import type { BuildOptions } from "./build-options.js";
 import type { JoinClasses } from "./join-classes.js";
 import { createSelector } from "./selector.js";
@@ -38,6 +44,10 @@ interface LooseSlotRecipeProps extends SelectedVariants {
   readonly classNames?: LooseSlotClasses | null | undefined;
 }
 
+type LooseSlotRecipe = WithVariantKeys<
+  (props?: LooseSlotRecipeProps | null) => LooseSlotClassNames
+>;
+
 /** The slots of a slot recipe and how it joins their classes. */
 interface Slots {
   readonly names: readonly string[];
@@ -51,7 +61,7 @@ interface Slots {
 function buildSlotRecipe(
   config: LooseSlotRecipeConfig,
   options: BuildOptions = defaultBuildOptions,
-): (props?: LooseSlotRecipeProps | null) => LooseSlotClassNames {
+): LooseSlotRecipe {
   const slots: Slots = {
     joinClasses: createJoinClasses(options.join),
     names: [...config.slots],
@@ -65,13 +75,16 @@ function buildSlotRecipe(
     options,
   );
 
-  return (props) => {
+  const slotRecipe = (
+    props?: LooseSlotRecipeProps | null,
+  ): LooseSlotClassNames => {
     const classNames = classNamesOf(props ?? noProps);
     const overrides = props?.classNames;
     return overrides === undefined || overrides === null
       ? classNames
       : withOverrides(slots, classNames, overrides);
   };
+  return withVariantKeys(slotRecipe, compiled);
 }
 
 function compileSlotRecipe(
@@ -161,4 +174,4 @@ function classOfSlot(classes: LooseSlotClasses, slot: string): string {
 }
 
 export { buildSlotRecipe };
-export type { LooseSlotRecipeConfig, LooseSlotRecipeProps };
+export type { LooseSlotRecipe, LooseSlotRecipeConfig, LooseSlotRecipeProps };
